@@ -9,8 +9,6 @@
 
 namespace Wp_Otp;
 
-defined( 'WPINC' ) || exit;
-
 /**
  * Handle all activation, deactivation and uninstallation tasks.
  *

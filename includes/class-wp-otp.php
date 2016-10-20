@@ -8,8 +8,6 @@
 
 namespace Wp_Otp;
 
-defined( 'WPINC' ) || exit;
-
 /**
  * The core plugin class.
  *
@@ -49,7 +47,7 @@ class Wp_Otp {
 	 */
 	private function load_dependencies() {
 		/**
-		 * The class responsible for activateion, deactivation and deletion of the plugin.
+		 * The class responsible for activation, deactivation and deletion of the plugin.
 		 */
 		require_once __DIR__ . '/class-wp-otp-setup.php';
 

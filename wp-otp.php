@@ -13,9 +13,7 @@ namespace Wp_Otp;
 
 defined( 'WPINC' ) || exit;
 
-/**
- * Define constants.
- */
+// Define constants.
 define( 'WP_OTP_SLUG', 'wp-otp' );
 define( 'WP_OTP_VERSION', '0.1.0' );
 

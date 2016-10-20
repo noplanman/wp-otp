@@ -15,8 +15,6 @@ use OTPHP\TOTP;
 use WP_Error;
 use WP_User;
 
-defined( 'WPINC' ) || exit;
-
 /**
  * The public-facing functionality of the plugin.
  *

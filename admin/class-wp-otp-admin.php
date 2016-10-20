@@ -12,8 +12,6 @@ namespace Wp_Otp;
 use OTPHP\TOTP;
 use WP_User;
 
-defined( 'WPINC' ) || exit;
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -92,9 +90,9 @@ class Wp_Otp_Admin {
 	 * @since 0.1.0
 	 */
 	public function admin_init() {
-		if ( array_key_exists( 'wp-otp-delete', $_GET ) ) {
+		if ( isset( $_GET['wp-otp-delete'] ) && 'yes' === $_GET['wp-otp-delete'] ) {
 			Wp_Otp_User_Meta::delete();
-			wp_redirect( get_edit_profile_url() );
+			wp_redirect( get_edit_profile_url() . '#wp_otp' );
 			exit;
 		}
 	}
@@ -175,7 +173,7 @@ class Wp_Otp_Admin {
 	 * @return void
 	 */
 	public function show_user_notification( array $messages, $type = 'notice' ) {
-		if ( ! empty( $messages ) ) {
+		if ( empty( $messages ) ) {
 			return;
 		}
 

@@ -55,7 +55,7 @@
 				printf(
 					'%1$s <a href="%2$s" onclick = "return confirm(\'%3$s\')">%4$s</a>',
 					__( 'WP-OTP is already configured.', 'wp-otp' ),
-					get_edit_profile_url() . '?wp-otp-delete',
+					add_query_arg( 'wp-otp-delete', 'yes' ),
 					'Are you sure you want to reconfigure WP-OTP?',
 					__( 'Reconfigure?', 'wp-otp' )
 				);

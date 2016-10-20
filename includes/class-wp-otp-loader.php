@@ -9,8 +9,6 @@
 
 namespace Wp_Otp;
 
-defined( 'WPINC' ) || exit;
-
 /**
  * Register all actions and filters for the plugin.
  *

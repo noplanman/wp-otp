@@ -12,8 +12,6 @@
 
 namespace Wp_Otp;
 
-defined( 'WPINC' ) || exit;
-
 /**
  * Define the internationalisation functionality.
  *
