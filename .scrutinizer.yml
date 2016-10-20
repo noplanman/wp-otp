@@ -1,0 +1,18 @@
+before_commands:
+  - "composer install --prefer-dist"
+
+checks:
+  php:
+    code_rating: true
+    duplication: false
+
+tools:
+  php_analyzer: true
+  php_mess_detector: true
+  php_code_sniffer:
+    config:
+      standard: "WordPress"
+
+filter:
+  excluded_paths:
+    - "vendor/*"
