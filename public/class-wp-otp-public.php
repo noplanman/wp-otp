@@ -85,7 +85,7 @@ class Wp_Otp_Public {
 
 		$user_meta_data = Wp_Otp_User_Meta::get_instance( $user->ID );
 
-		if ( null !== $user_meta_data->get_user_meta( 'secret' ) ) {
+		if ( true === $user_meta_data->get_user_meta( 'enabled' ) && null !== $user_meta_data->get_user_meta( 'secret' ) ) {
 			$otp_code = $_POST['wp_otp_code'];
 
 			/**
