@@ -40,7 +40,6 @@ class Wp_Otp_Admin {
 			$user->user_login,
 			$user_meta_data->get_user_meta( 'secret' )
 		);
-		$otp->setIssuer( get_option( 'blogname' ) );
 		$secret = $otp->getSecret();
 
 		$user_meta_data->set_user_meta( 'secret', $secret );
@@ -111,6 +110,8 @@ class Wp_Otp_Admin {
 		$secret = $user_meta_data->get_user_meta( 'secret' );
 
 		$otp = new TOTP( $user->user_login, $secret );
+		// Issuer isn't allowed to have any semicolon.
+		$otp->setIssuer( str_replace( [ ':', '%3a', '%3A' ], '', get_bloginfo( 'name' ) ) );
 
 		// Check if the secret was loaded from the meta or not.
 		if ( null === $secret ) {
