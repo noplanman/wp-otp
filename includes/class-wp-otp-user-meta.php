@@ -66,9 +66,11 @@ class Wp_Otp_User_Meta {
 
 	/**
 	 * Preload the user metadata on initialisation.
+	 *
+	 * @since 0.1.0
 	 */
 	private function __construct() {
-		$this->get_user_meta();
+		$this->fetch();
 	}
 
 	/**
@@ -92,6 +94,24 @@ class Wp_Otp_User_Meta {
 	}
 
 	/**
+	 * Fetch the saved user meta data, filling in with the default values.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return Wp_Otp_User_Meta Instance of this class.
+	 */
+	private function fetch() {
+		if ( 0 === count( self::$user_meta ) ) {
+			self::$user_meta = wp_parse_args(
+				get_user_meta( self::$user_id, self::$user_meta_key, true ),
+				self::$default_user_meta
+			);
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Get a specific option.
 	 *
 	 * @since 0.1.0
@@ -101,13 +121,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return mixed Requested option value.
 	 */
-	public function get_user_meta( $key = null, $default = null ) {
-		if ( 0 === count( self::$user_meta ) ) {
-			self::$user_meta = wp_parse_args(
-				get_user_meta( self::$user_id, self::$user_meta_key, true ),
-				self::$default_user_meta
-			);
-		}
+	public function get( $key = null, $default = null ) {
 		if ( null !== $key ) {
 			if ( isset( self::$user_meta[ $key ] ) ) {
 				// Return found option value.
@@ -120,6 +134,8 @@ class Wp_Otp_User_Meta {
 				return self::$default_user_meta[ $key ];
 			}
 		}
+
+		return $default;
 	}
 
 	/**
@@ -129,7 +145,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return array All the user meta.
 	 */
-	public function get_all_user_meta() {
+	public function get_all() {
 		return self::$user_meta;
 	}
 
@@ -141,8 +157,10 @@ class Wp_Otp_User_Meta {
 	 * @param string $key   ID of option to get.
 	 * @param mixed  $value Value to be set for the passed option.
 	 * @param bool   $save  Save the user meta immediately after setting them.
+	 *
+	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public function set_user_meta( $key, $value, $save = false ) {
+	public function set( $key, $value, $save = false ) {
 		if ( null !== $key ) {
 			if ( null !== $value ) {
 				self::$user_meta[ $key ] = $value;
@@ -152,6 +170,8 @@ class Wp_Otp_User_Meta {
 		}
 
 		$save && $this->save();
+
+		return $this;
 	}
 
 	/**
@@ -161,35 +181,46 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @param array $metas Key-Value pairs of user meta to set.
 	 * @param bool  $save  Save the user meta immediately after setting them.
+	 *
+	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public function set_user_metas( $metas, $save = false ) {
+	public function set_all( $metas, $save = false ) {
 		foreach ( $metas as $key => $value ) {
-			$this->set_user_meta( $key, $value );
+			$this->set( $key, $value );
 		}
 
 		$save && $this->save();
+
+		return $this;
 	}
 
 	/**
 	 * Save the user meta.
 	 *
 	 * @since 0.1.0
+	 *
+	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
 	public function save() {
 		update_user_meta( self::$user_id, self::$user_meta_key, self::$user_meta );
+
+		return $this;
 	}
 
 	/**
-	 * Save the user meta.
+	 * Clear the user meta.
 	 *
 	 * @since 0.1.0
+	 *
+	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public static function delete() {
-		if ( delete_user_meta( self::$user_id ?: get_current_user_id(), self::$user_meta_key ) ) {
-			self::$user_meta = [];
-
-			// Reset defaults.
-			self::get_instance()->get_user_meta();
+	public static function clear() {
+		$user_id = self::$user_id ?: get_current_user_id();
+		if ( delete_user_meta( $user_id, self::$user_meta_key ) ) {
+			// Reset instance.
+			self::$instance = null;
 		}
+
+		return self::get_instance( $user_id );
 	}
 }

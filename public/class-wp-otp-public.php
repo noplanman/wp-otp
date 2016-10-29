@@ -85,7 +85,7 @@ class Wp_Otp_Public {
 
 		$user_meta_data = Wp_Otp_User_Meta::get_instance( $user->ID );
 
-		if ( true === $user_meta_data->get_user_meta( 'enabled' ) && null !== $user_meta_data->get_user_meta( 'secret' ) ) {
+		if ( true === $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
 			$otp_code = $_POST['wp_otp_code'];
 
 			/**
@@ -97,12 +97,12 @@ class Wp_Otp_Public {
 			 */
 			$otp_window = (int) apply_filters( 'wp_otp_code_expiration_window', 2 );
 
-			$otp          = new TOTP( '', $user_meta_data->get_user_meta( 'secret' ) );
+			$otp          = new TOTP( '', $user_meta_data->get( 'secret' ) );
 			$verification = $otp->verify( $otp_code, null, $otp_window );
 
 			if ( true !== $verification ) {
-				if ( $otp_code === $user_meta_data->get_user_meta( 'recovery' ) ) {
-					$user_meta_data->set_user_meta( 'recovery', null, true );
+				if ( $otp_code === $user_meta_data->get( 'recovery' ) ) {
+					$user_meta_data->set( 'recovery', null, true );
 				} else {
 					return new WP_Error( 'invalid_otp', $otp_invalid_code_text );
 				}
