@@ -9,6 +9,7 @@
 
 namespace Wp_Otp;
 
+use Base32\Base32;
 use OTPHP\TOTP;
 use WP_User;
 
@@ -94,6 +95,73 @@ class Wp_Otp_Admin {
 			wp_redirect( get_edit_profile_url() . '#wp_otp' );
 			exit;
 		}
+	}
+
+	/**
+	 * Get a set of random recovery codes.
+	 *
+	 * Returns an array in the format [ 'code_1' => true, ...,'code_n' => true ]
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param null|int $codes_count_override  Override the filter and default for the codes count.
+	 * @param null|int $codes_length_override Override the filter and default for the codes length.
+	 *
+	 * @return array
+	 */
+	public function get_random_recovery_codes( $codes_count_override = null, $codes_length_override = null ) {
+		/**
+		 * Filter for the number of random recovery codes to generate (between 1 and 20).
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param int $codes_count
+		 */
+		$codes_count = $codes_count_override ?: (int) apply_filters( 'wp_otp_recovery_codes_count', 5 );
+		$codes_count = min( max( 1, $codes_count ), 20 );
+
+		/**
+		 * Filter for the length of the random recovery codes to generate (between 8 and 64).
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param int $codes_length
+		 */
+		$codes_length = $codes_length_override ?: (int) apply_filters( 'wp_otp_recovery_codes_length', 16 );
+		$codes_length = min( max( 8, $codes_length ), 64 );
+
+		$codes = [];
+		while ( count( $codes ) < $codes_count ) {
+			$code = substr( bin2hex( random_bytes( 32 ) ), 0, $codes_length );
+			if ( ! array_key_exists( $code, $codes ) ) {
+				$codes[ $code ] = true;
+			}
+		}
+
+		return $codes;
+	}
+
+	/**
+	 * Get a new random OTP secret.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param null|int $secret_length_override Override the filter and default for the codes count.
+	 *
+	 * @return string
+	 */
+	public function get_random_secret( $secret_length_override = null ) {
+		/**
+		 * Filter for the length of the secret to be generated (between 8 and 64).
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param int $secret_length
+		 */
+		$secret_length = $secret_length_override ?: (int) apply_filters( 'wp_otp_secret_length', 8 );
+		$secret_length = min( max( 8, $secret_length ), 64 );
+
+		return substr( Base32::encode( random_bytes( 42 ) ), 0, $secret_length );
 	}
 
 	/**
