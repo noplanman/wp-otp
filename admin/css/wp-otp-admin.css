@@ -1,0 +1,20 @@
+.wp-otp-app-box {
+    display: inline-block;
+    margin: 8px 16px;
+}
+
+.wp-otp-link-reconfigure,
+.wp-otp-link-new-recovery-codes {
+    margin: 4px !important;
+}
+
+.wp-otp-recovery-codes-box del,
+.wp-otp-recovery-codes-box span {
+    font-weight: normal;
+    display: block;
+    margin: 4px;
+}
+
+.wp-otp-recovery-codes-box del {
+    color: #800;
+}

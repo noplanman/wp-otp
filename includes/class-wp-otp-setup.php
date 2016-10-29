@@ -108,7 +108,7 @@ class Wp_Otp_Setup {
 		check_admin_referer( 'bulk-plugins' );
 
 		// Important: Check if the file is the one that was registered during the uninstall hook.
-		if ( $file !== WP_UNINSTALL_PLUGIN ) {
+		if ( WP_UNINSTALL_PLUGIN !== $file ) {
 			return;
 		}
 	}

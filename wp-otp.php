@@ -7,6 +7,9 @@
  * Author: Armando Lüscher
  * Author URI: https://noplanman.ch
  * License: GPLv3 or later
+ *
+ * @package Wp_Otp
+ * @since   0.1.0
  */
 
 namespace Wp_Otp;

@@ -11,7 +11,7 @@ namespace Wp_Otp;
 /**
  * The core plugin class.
  *
- * @since      0.1.0
+ * @since 0.1.0
  */
 class Wp_Otp {
 	/**
@@ -99,6 +99,9 @@ class Wp_Otp {
 	 */
 	private function define_admin_hooks() {
 		$plugin_admin = new Wp_Otp_Admin();
+
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'admin_init', $plugin_admin );
 		$this->loader->add_action( 'admin_notices', $plugin_admin );

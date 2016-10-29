@@ -85,8 +85,8 @@ class Wp_Otp_Public {
 
 		$user_meta_data = Wp_Otp_User_Meta::get_instance( $user->ID );
 
-		if ( true === $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
-			$otp_code = $_POST['wp_otp_code'];
+		if ( $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
+			$otp_code = isset( $_POST['wp_otp_code'] ) ? $_POST['wp_otp_code'] : 0;
 
 			/**
 			 * Filter for the OTP code expiration window.
@@ -97,12 +97,15 @@ class Wp_Otp_Public {
 			 */
 			$otp_window = (int) apply_filters( 'wp_otp_code_expiration_window', 2 );
 
-			$otp          = new TOTP( '', $user_meta_data->get( 'secret' ) );
-			$verification = $otp->verify( $otp_code, null, $otp_window );
+			$otp = new TOTP( '', $user_meta_data->get( 'secret' ) );
 
-			if ( true !== $verification ) {
-				if ( $otp_code === $user_meta_data->get( 'recovery' ) ) {
-					$user_meta_data->set( 'recovery', null, true );
+			// If this isn't a valid OTP code, check if it's a recovery code, else fail.
+			if ( ! $otp->verify( $otp_code, null, $otp_window ) ) {
+				$recovery_codes = $user_meta_data->get( 'recovery_codes' );
+				if ( array_key_exists( $otp_code, $recovery_codes ) && $recovery_codes[ $otp_code ] ) {
+					// Unset the recovery code that has just been used.
+					$recovery_codes[ $otp_code ] = false;
+					$user_meta_data->set( 'recovery_codes', $recovery_codes, true );
 				} else {
 					return new WP_Error( 'invalid_otp', $otp_invalid_code_text );
 				}

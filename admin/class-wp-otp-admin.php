@@ -19,6 +19,41 @@ use WP_User;
  * @since 0.1.0
  */
 class Wp_Otp_Admin {
+
+	/**
+	 * Register the stylesheets for the admin area.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $hook Page on which this hook is called.
+	 */
+	public function enqueue_styles( $hook ) {
+		if ( 'profile.php' === $hook ) {
+			wp_enqueue_style( WP_OTP_SLUG . '-admin', plugin_dir_url( __FILE__ ) . 'css/wp-otp-admin.css' );
+		}
+	}
+
+	/**
+	 * Register the scripts for the admin area.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $hook Page on which this hook is called.
+	 */
+	public function enqueue_scripts( $hook ) {
+		if ( 'profile.php' === $hook ) {
+			$handle = WP_OTP_SLUG . '-admin';
+
+			wp_enqueue_script( $handle, plugin_dir_url( __FILE__ ) . 'js/wp-otp-admin.js', [ 'jquery' ], null, true );
+			wp_localize_script( $handle, 'wp_otp', [
+				'confirm_reconfigure'        =>
+					__( 'Are you sure you want to reconfigure WP-OTP?', 'wp-otp' ),
+				'confirm_new_recovery_codes' =>
+					__( 'Are you sure you want to regenerate your recovery codes?', 'wp-otp' ),
+			] );
+		}
+	}
+
 	/**
 	 * Check and save the OTP data when saving the user profile.
 	 *
@@ -37,39 +72,34 @@ class Wp_Otp_Admin {
 
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
 
-		$otp = new TOTP(
-			$user->user_login,
-			$user_meta_data->get( 'secret' )
-		);
-		$secret = $otp->getSecret();
+		// Get the secret.
+		$secret = $user_meta_data->get( 'secret', $this->get_random_secret() );
 
-		$user_meta_data->set( 'secret', $secret );
+		$otp = new TOTP( $user->user_login, $secret );
 
-		$otp_code = trim( $_POST['wp_otp_code'] );
+		$otp_code = isset( $_POST['wp_otp_code'] ) ? (int) $_POST['wp_otp_code'] : 0;
 		if ( $otp_code && ! $user_meta_data->get( 'enabled', false ) ) {
 			$otp_window = (int) apply_filters( 'wp_otp_code_expiration_window', 2 );
 
-			$verification = $otp->verify( $otp_code, null, $otp_window );
-
-			if ( $verification ) {
-				$otp_recovery = bin2hex( random_bytes( 8 ) );
+			if ( $otp->verify( $otp_code, null, $otp_window ) ) {
+				$otp_recovery_codes = $this->get_random_recovery_codes();
 				$user_meta_data->set_all( [
-					'enabled'  => true,
-					'recovery' => $otp_recovery,
-					'notice'   => [
+					'enabled'        => true,
+					'recovery_codes' => $otp_recovery_codes,
+					'notice'         => [
 						'type'     => 'success',
 						'messages' => [
 							'<strong>' . __( 'WP-OTP configured successfully!', 'wp-otp' ) . '</strong>',
-							__( 'If you change your phone or do not have access to the OTP Authenticator app you can use the following key as a One Time Password on your login screen and then reconfigure WP OTP. Never share this key with anyone!',
+							__( 'If you change your phone or do not have access to the OTP Authenticator app you can use the following codes as One Time Passwords on your login screen and then reconfigure WP-OTP.',
 								'wp-otp' ),
-							$otp_recovery,
+							'<br>' . __( 'Keep these codes secret!', 'wp-otp' ),
+							implode( '<br>', array_keys( $otp_recovery_codes ) ),
 						],
 					],
 				] );
 			} else {
 				Wp_Otp_User_Meta::clear();
 				$user_meta_data->set_all( [
-					'secret' => $secret,
 					'notice' => [
 						'type'     => 'error',
 						'messages' => [
@@ -80,7 +110,7 @@ class Wp_Otp_Admin {
 				] );
 			}
 
-			$user_meta_data->save();
+			$user_meta_data->set( 'secret', $secret, true );
 		}
 	}
 
@@ -90,9 +120,28 @@ class Wp_Otp_Admin {
 	 * @since 0.1.0
 	 */
 	public function admin_init() {
-		if ( isset( $_GET['wp-otp-delete'] ) && 'yes' === $_GET['wp-otp-delete'] ) {
+		if ( isset( $_GET['wp-otp-reconfigure'] ) && 'yes' === $_GET['wp-otp-reconfigure'] ) {
 			Wp_Otp_User_Meta::clear();
 			wp_redirect( get_edit_profile_url() . '#wp_otp' );
+			exit;
+		}
+
+		if ( isset( $_GET['wp-otp-new-recovery-codes'] ) && 'yes' === $_GET['wp-otp-new-recovery-codes'] ) {
+			$otp_recovery_codes = $this->get_random_recovery_codes();
+			Wp_Otp_User_Meta::get_instance()->set_all( [
+				'recovery_codes' => $otp_recovery_codes,
+				'notice'         => [
+					'type'     => 'success',
+					'messages' => [
+						'<strong>' . __( 'WP-OTP recovery codes regenerated!', 'wp-otp' ) . '</strong>',
+						__( 'Here are your new recovery codes.', 'wp-otp' ),
+						'<br>' . __( 'Keep these codes secret!', 'wp-otp' ),
+						implode( '<br>', array_keys( $otp_recovery_codes ) ),
+					],
+				],
+			], true );
+
+			wp_redirect( get_edit_profile_url() );
 			exit;
 		}
 	}
@@ -174,18 +223,14 @@ class Wp_Otp_Admin {
 	public function user_profile_render( $user ) {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
 
-		// Get the secret.
-		$secret = $user_meta_data->get( 'secret' );
+		// Get and save the secret.
+		$secret = $user_meta_data->get( 'secret', $this->get_random_secret() );
+		$user_meta_data->set( 'secret', $secret, true );
 
 		$otp = new TOTP( $user->user_login, $secret );
-		// Issuer isn't allowed to have any semicolon.
-		$otp->setIssuer( str_replace( [ ':', '%3a', '%3A' ], '', get_bloginfo( 'name' ) ) );
 
-		// Check if the secret was loaded from the meta or not.
-		if ( null === $secret ) {
-			$secret = $otp->getSecret();
-			$user_meta_data->set( 'secret', $secret, true );
-		}
+		// Issuer isn't allowed to have any colon.
+		$otp->setIssuer( str_replace( [ ':', '%3a', '%3A' ], '', get_bloginfo( 'name' ) ) );
 
 		/**
 		 * Filter for the OTP QR code provisioning URI.
@@ -201,7 +246,7 @@ class Wp_Otp_Admin {
 			'https://api.qrserver.com/v1/create-qr-code/?data={PROVISIONING_URI}&qzone=2&size=300x300'
 		) );
 
-		$otp_enabled = $user_meta_data->get( 'enabled', false );
+		$otp_enabled = $user_meta_data->get( 'enabled' );
 
 		$otp_apps = [
 			[
@@ -269,25 +314,38 @@ class Wp_Otp_Admin {
 	public function admin_notices() {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
 
-		if ( ! $user_meta_data->get( 'enabled', false ) ) {
+		/*if ( ! $user_meta_data->get( 'enabled' ) ) {
 			$this->show_user_notification( [
-				__( '<strong>Note:</strong> You have not yet configured WP-OTP.', 'wp-otp' ),
+				__( '<strong>Note:</strong> You have not configured WP-OTP yet.', 'wp-otp' ),
 				sprintf(
-					'<a href="%1$s#wp_otp">%2$s</a>',
+					'<a href="%1$s#wp_otp" class="button">%2$s</a>',
 					get_edit_profile_url(),
 					_x( 'Configure now', 'Link text to go to WP-OTP section in user profile', 'wp-otp' )
 				),
 			] );
-		} elseif ( null === $user_meta_data->get( 'recovery' ) ) {
-			$this->show_user_notification( [
-				__( '<strong>Important:</strong> You have used your WP-OTP recovery hash. You must generate a new one.',
-					'wp-otp' ),
-				sprintf(
-					'<a href="%1$s#wp_otp">%2$s</a>',
-					get_edit_profile_url(),
-					_x( 'Configure now', 'Link text to go to WP-OTP section in user profile', 'wp-otp' )
-				),
-			], 'error' );
+		} else {*/
+		if ( $user_meta_data->get( 'enabled' ) ) {
+			$recovery_codes       = array_filter( $user_meta_data->get( 'recovery_codes' ) );
+			$recovery_codes_count = count( $recovery_codes );
+			if ( $recovery_codes_count < 3 ) {
+				$this->show_user_notification( [
+					'<strong>' . __( 'Important', 'wp-otp' ) . '</strong>',
+					sprintf(
+						_n(
+							'You have %d WP-OTP recovery code left. You should generate new ones.',
+							'You have %d WP-OTP recovery codes left. You should generate new ones.',
+							$recovery_codes_count,
+							'wp-otp'
+						),
+						$recovery_codes_count
+					),
+					sprintf(
+						'<a href="%1$s" class="button">%2$s</a>',
+						add_query_arg( 'wp-otp-new-recovery-codes', 'yes', get_edit_profile_url() ),
+						_x( 'Regenerate', 'Link to regenerate the WP-OTP recovery codes', 'wp-otp' )
+					),
+				], 'error' );
+			}
 		}
 
 		if ( $notice = $user_meta_data->get( 'notice' ) ) {
