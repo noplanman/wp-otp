@@ -77,8 +77,9 @@ class Wp_Otp_Admin {
 
 		$otp = new TOTP( $user->user_login, $secret );
 
-		$otp_code = isset( $_POST['wp_otp_code'] ) ? (int) $_POST['wp_otp_code'] : 0;
+		$otp_code = isset( $_POST['wp_otp_code'] ) ? $_POST['wp_otp_code'] : '';
 		if ( $otp_code && ! $user_meta_data->get( 'enabled', false ) ) {
+			/** Filter documented in class-wp-otp-public.php */
 			$otp_window = (int) apply_filters( 'wp_otp_code_expiration_window', 2 );
 
 			if ( $otp->verify( $otp_code, null, $otp_window ) ) {

@@ -86,7 +86,7 @@ class Wp_Otp_Public {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance( $user->ID );
 
 		if ( $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
-			$otp_code = isset( $_POST['wp_otp_code'] ) ? $_POST['wp_otp_code'] : 0;
+			$otp_code = isset( $_POST['wp_otp_code'] ) ? $_POST['wp_otp_code'] : '';
 
 			/**
 			 * Filter for the OTP code expiration window.

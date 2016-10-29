@@ -6,6 +6,7 @@
 .wp-otp-link-reconfigure,
 .wp-otp-link-new-recovery-codes {
     margin: 4px !important;
+    display: inline-block;
 }
 
 .wp-otp-recovery-codes-box del,
