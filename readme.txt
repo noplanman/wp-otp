@@ -4,8 +4,8 @@ Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, goo
 Requires at least: 3.1.4
 Tested up to: 4.7
 Stable tag: 0.1.0
-License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl.html
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 Donate link: https://paypal.me/noplanman
 
 Make your WordPress login extra secure with One Time Passwords.
