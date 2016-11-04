@@ -17,8 +17,15 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/noplanman/composer-wp-package-replacements.git"
+        }
+    ],
     "require": {
         "php": "^5.5|^7.0",
+        "noplanman/composer-wp-package-replacements": "@dev",
         "spomky-labs/otphp": "^8.2"
     }
 }
