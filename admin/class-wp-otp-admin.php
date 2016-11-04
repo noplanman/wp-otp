@@ -208,7 +208,7 @@ class Wp_Otp_Admin {
 		 *
 		 * @param int $secret_length
 		 */
-		$secret_length = $secret_length_override ?: (int) apply_filters( 'wp_otp_secret_length', 8 );
+		$secret_length = $secret_length_override ?: (int) apply_filters( 'wp_otp_secret_length', 16 );
 		$secret_length = min( max( 8, $secret_length ), 64 );
 
 		return substr( Base32::encode( random_bytes( 42 ) ), 0, $secret_length );

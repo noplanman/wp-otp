@@ -11,7 +11,7 @@
 <table class="form-table">
 	<tr>
 		<th scope="row">
-			<?php echo __( 'OTP Secret', 'wp-otp' ) . ':<br>' . $secret . '<br><br>'; ?>
+			<?php echo __( 'OTP Secret', 'wp-otp' ) . ':<br>' . implode( ' ', str_split( $secret, 4 ) ) . '<br><br>'; ?>
 			<?php if ( $otp_enabled ): ?>
 				<?php
 				printf(
