@@ -2,8 +2,8 @@
     "name": "noplanman/wp-otp",
     "type": "wordpress-plugin",
     "description": "OTP for WordPress",
-    "keywords": ["otp", "totp", "hotp", "plugin", "wordpress"],
-    "license": "GPL-3.0",
+    "keywords": ["otp", "totp", "plugin", "wordpress"],
+    "license": "GPL-2.0",
     "homepage": "https://github.com/noplanman/wp-otp",
     "support": {
         "issues": "https://github.com/noplanman/wp-otp/issues",

@@ -3,7 +3,7 @@ Contributors: noplanman
 Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, google authenticator
 Requires at least: 3.1.4
 Tested up to: 4.7
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 Donate link: https://paypal.me/noplanman
@@ -48,12 +48,14 @@ WordPress 3.1.4, PHP 5.5.
 You can either use the built in WordPress installer or install the plugin manually.
 
 For an automated installation:
+
 1. Go to 'Plugins -> Add New' on your WordPress Admin page.
 2. Search for the 'WP OTP' plugin.
 3. Install by clicking the 'Install Now' button.
 4. Activate the plugin on the 'Plugins' page in your WordPress Admin.
 
 For a manual installation:
+
 1. Upload the 'wp-otp' folder to the plugins directory of your WordPress installation.
 2. Activate the plugin on the 'Plugins' page in your WordPress Admin.
 
@@ -67,6 +69,10 @@ Be sure to regenerate them when you run out though, or better yet, reconfigure y
 Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
+
+= 0.1.1 =
+* Longer secret by default.
+* Replace/override packages not compatible with WordPress.
 
 = 0.1.0 =
 * First version!

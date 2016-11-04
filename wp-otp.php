@@ -18,7 +18,7 @@ defined( 'WPINC' ) || exit;
 
 // Define constants.
 define( 'WP_OTP_SLUG', 'wp-otp' );
-define( 'WP_OTP_VERSION', '0.1.0' );
+define( 'WP_OTP_VERSION', '0.1.1' );
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/class-wp-otp.php';
