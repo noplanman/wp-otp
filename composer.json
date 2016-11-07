@@ -19,13 +19,21 @@
     ],
     "repositories": [
         {
-            "type": "git",
-            "url": "https://github.com/noplanman/composer-wp-package-replacements.git"
+            "type": "package",
+            "package": {
+                "type": "metapackage",
+                "name": "_dummy_wp",
+                "description": "Replace any required packages with a dummy.",
+                "version": "dev-master",
+                "replace": {
+                    "paragonie/random_compat": "*"
+                }
+            }
         }
     ],
     "require": {
         "php": "^5.5|^7.0",
-        "noplanman/composer-wp-package-replacements": "@dev",
+        "_dummy_wp": "@dev",
         "spomky-labs/otphp": "^8.2"
     }
 }
