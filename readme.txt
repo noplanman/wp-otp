@@ -3,7 +3,7 @@ Contributors: noplanman
 Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, google authenticator
 Requires at least: 3.1.4
 Tested up to: 4.7
-Stable tag: 0.1.2
+Stable tag: 0.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 Donate link: https://paypal.me/noplanman
@@ -70,7 +70,7 @@ Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
 
-= next =
+= 0.1.3 =
 * Make OTP code input a normal text field, to allow input verification.
 
 = 0.1.2 =
