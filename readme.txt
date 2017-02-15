@@ -70,6 +70,9 @@ Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
 
+= next =
+* Make OTP code input a normal text field, to allow input verification.
+
 = 0.1.2 =
 * Add proper localisation.
 

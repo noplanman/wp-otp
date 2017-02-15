@@ -54,7 +54,7 @@ class Wp_Otp_Public {
 		<p>
 			<label for="wp_otp_code"><?php echo $otp_text; ?></label><br/>
 			<?php '' !== $otp_text_sub && printf( '<em>%s</em>', $otp_text_sub ); ?>
-			<input type="password" class="input" name="wp_otp_code" id="wp_otp_code"/>
+			<input type="text" class="input" name="wp_otp_code" id="wp_otp_code"/>
 		</p>
 		<?php
 	}
