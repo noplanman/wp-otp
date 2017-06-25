@@ -3,7 +3,7 @@
  * The core functionality of the plugin
  *
  * @package Wp_Otp
- * @since 0.1.0
+ * @since   0.1.0
  */
 
 namespace Wp_Otp;

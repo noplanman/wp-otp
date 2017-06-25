@@ -2,8 +2,8 @@
 Contributors: noplanman
 Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, google authenticator
 Requires at least: 3.1.4
-Tested up to: 4.7
-Stable tag: 0.1.3
+Tested up to: 4.8
+Stable tag: 0.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 Donate link: https://paypal.me/noplanman
@@ -69,6 +69,10 @@ Be sure to regenerate them when you run out though, or better yet, reconfigure y
 Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
+
+= 0.1.4 =
+* Tested for WP 4.8.
+* Update OTPHP to 0.8.3.
 
 = 0.1.3 =
 * Make OTP code input a normal text field, to allow input verification.

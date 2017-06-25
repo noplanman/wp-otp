@@ -34,6 +34,6 @@
     "require": {
         "php": "^5.5|^7.0",
         "_dummy_wp": "@dev",
-        "spomky-labs/otphp": "^8.2"
+        "spomky-labs/otphp": "^8.3"
     }
 }
