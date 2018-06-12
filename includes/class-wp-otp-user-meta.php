@@ -54,7 +54,7 @@ class Wp_Otp_User_Meta {
 	 * @since 0.1.0
 	 * @var array
 	 */
-	private static $user_meta;
+	private static $user_meta = array();
 
 	/**
 	 * User ID of the user whose meta data is managed.
