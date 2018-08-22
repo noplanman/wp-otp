@@ -91,8 +91,7 @@ class Wp_Otp_Admin {
 						'type'     => 'success',
 						'messages' => [
 							'<strong>' . __( 'WP-OTP configured successfully!', 'wp-otp' ) . '</strong>',
-							__( 'If you change your phone or do not have access to the OTP Authenticator app you can use the following codes as One Time Passwords on your login screen and then reconfigure WP-OTP.',
-								'wp-otp' ),
+							__( 'If you change your phone or do not have access to the OTP Authenticator app you can use the following codes as One Time Passwords on your login screen and then reconfigure WP-OTP.', 'wp-otp' ),
 							'<br>' . __( 'Keep these codes secret!', 'wp-otp' ),
 							implode( '<br>', array_keys( $otp_recovery_codes ) ),
 						],
@@ -269,9 +268,18 @@ class Wp_Otp_Admin {
 		];
 
 		$app_providers = [
-			'f_droid'    => [ 'name' => 'F-Droid', 'uri_logo' => plugins_url( 'images/f-droid.png', __FILE__ ), ],
-			'play_store' => [ 'name' => 'Play Store', 'uri_logo' => plugins_url( 'images/play-store.png', __FILE__ ), ],
-			'app_store'  => [ 'name' => 'App Store', 'uri_logo' => plugins_url( 'images/app-store.png', __FILE__ ), ],
+			'f_droid'    => [
+				'name'     => 'F-Droid',
+				'uri_logo' => plugins_url( 'images/f-droid.png', __FILE__ ),
+			],
+			'play_store' => [
+				'name'     => 'Play Store',
+				'uri_logo' => plugins_url( 'images/play-store.png', __FILE__ ),
+			],
+			'app_store'  => [
+				'name'     => 'App Store',
+				'uri_logo' => plugins_url( 'images/app-store.png', __FILE__ ),
+			],
 		];
 
 		include __DIR__ . '/partials/wp-otp-profile-display.php';
@@ -349,7 +357,8 @@ class Wp_Otp_Admin {
 			}
 		}
 
-		if ( $notice = $user_meta_data->get( 'notice' ) ) {
+		$notice = $user_meta_data->get( 'notice' );
+		if ( $notice ) {
 			$this->show_user_notification(
 				(array) $notice['messages'],
 				$notice['type']

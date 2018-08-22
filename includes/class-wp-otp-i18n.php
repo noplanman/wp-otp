@@ -19,7 +19,7 @@ namespace Wp_Otp;
  *
  * @since 0.1.0
  */
-class Wp_Otp_i18n {
+class Wp_Otp_I18n {
 	/**
 	 * Load the plugin text domain for translation.
 	 *

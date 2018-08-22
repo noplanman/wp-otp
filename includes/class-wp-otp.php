@@ -86,7 +86,7 @@ class Wp_Otp {
 	 * @access private
 	 */
 	private function set_locale() {
-		$plugin_i18n = new Wp_Otp_i18n();
+		$plugin_i18n = new Wp_Otp_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
