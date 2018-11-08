@@ -1,0 +1,19 @@
+cache:
+  key: wp-otp
+  paths:
+  - vendor/
+
+before_script:
+- apk -U add git
+- curl -sS https://getcomposer.org/installer | php
+- php composer.phar install
+
+test:5.6:
+  image: php:5.6-cli-alpine
+  script:
+  - php composer.phar check-code
+
+test:7.3-rc:
+  image: php:7.3-rc-cli-alpine
+  script:
+  - php composer.phar check-code

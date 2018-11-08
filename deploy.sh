@@ -25,6 +25,7 @@ SVN_USER="noplanman" # your svn username
 SVN_IGNORE="
 .git
 .gitignore
+.gitlab-ci.yml
 .scrutinizer.yml
 composer.json
 composer.lock

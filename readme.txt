@@ -70,6 +70,9 @@ Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
 
+= Unreleased =
+* Add GitLab CI for PHP Code Sniffer.
+
 = 0.2.0 =
 * Tested for WP 5.0.
 * Update OTPHP to 8.3.3.
