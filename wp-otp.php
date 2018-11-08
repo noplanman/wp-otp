@@ -3,7 +3,7 @@
  * Plugin Name:       WP-OTP
  * Plugin URI:        https://wordpress.org/plugins/wp-otp/
  * Description:       WP-OTP adds 2 Factor Authentication using TOTP. (Based on "WP Secure Login" by Brijesh Kothari)
- * Version:           0.1.4
+ * Version:           0.2.0
  * Author:            Armando Lüscher
  * Author URI:        https://noplanman.ch
  * License:           GPL-3.0+
@@ -23,7 +23,7 @@ defined( 'WPINC' ) || exit;
 
 // Define constants.
 define( 'WP_OTP_SLUG', 'wp-otp' );
-define( 'WP_OTP_VERSION', '0.1.4' );
+define( 'WP_OTP_VERSION', '0.2.0' );
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/class-wp-otp.php';

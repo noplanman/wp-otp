@@ -2,11 +2,11 @@
 Contributors: noplanman
 Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, google authenticator
 Requires at least: 3.1.4
-Tested up to: 4.8
-Stable tag: 0.1.4
+Tested up to: 5.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-Donate link: https://paypal.me/noplanman
+Donate link: https://noplanman.ch/donate
 
 Make your WordPress login extra secure with One Time Passwords.
 
@@ -70,9 +70,14 @@ Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
 
+= 0.2.0 =
+* Tested for WP 5.0.
+* Update OTPHP to 8.3.3.
+* Moved project to Feneas GitLab (git.feneas.org)
+
 = 0.1.4 =
 * Tested for WP 4.8.
-* Update OTPHP to 0.8.3.
+* Update OTPHP to 8.3.0.
 
 = 0.1.3 =
 * Make OTP code input a normal text field, to allow input verification.
