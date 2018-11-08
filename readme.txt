@@ -26,8 +26,8 @@ Each user gets their own secret key to authenticate with, giving them control ov
 
 = Development =
 This plugin is completely open source and a work of passion.
-If you would like to be part of it and join in, make your way over to the [project page on GitHub](https://github.com/noplanman/wp-otp) now.
-Also, if you have an idea you would like to see in this plugin or if you've found a bug, please [let me know](https://github.com/noplanman/wp-otp/issues/new).
+If you would like to be part of it and join in, make your way over to the [project page](https://git.feneas.org/noplanman/wp-otp) now.
+Also, if you have an idea you would like to see in this plugin or if you've found a bug, please [let me know](https://git.feneas.org/noplanman/wp-otp/issues/new).
 
 = Filters =
 There are a multitude of filters to be adjusted.

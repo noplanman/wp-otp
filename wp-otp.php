@@ -10,8 +10,8 @@
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:       wp-otp
  * Domain Path:       /languages
- * GitHub Plugin URI: noplanman/wp-otp
- * GitHub Branch:     master
+ * GitLab Plugin URI: https://git.feneas.org/noplanman/wp-otp
+ * GitLab Branch:     master
  *
  * @package Wp_Otp
  * @since   0.1.0

@@ -4,10 +4,10 @@
     "description": "OTP for WordPress",
     "keywords": ["otp", "totp", "plugin", "wordpress"],
     "license": "GPL-2.0",
-    "homepage": "https://github.com/noplanman/wp-otp",
+    "homepage": "https://git.feneas.org/noplanman/wp-otp",
     "support": {
-        "issues": "https://github.com/noplanman/wp-otp/issues",
-        "source": "https://github.com/noplanman/wp-otp"
+        "issues": "https://git.feneas.org/noplanman/wp-otp/issues",
+        "source": "https://git.feneas.org/noplanman/wp-otp"
     },
     "authors": [
         {
