@@ -3,7 +3,7 @@ Contributors: noplanman
 Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, google authenticator
 Requires at least: 3.1.4
 Tested up to: 5.0
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 Donate link: https://noplanman.ch/donate
@@ -70,7 +70,7 @@ Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
 
-= Unreleased =
+= 0.2.1 =
 * Add GitLab CI for PHP Code Sniffer.
 * Fix changed Base32 namespace.
 
