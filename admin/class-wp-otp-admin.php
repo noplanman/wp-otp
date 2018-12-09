@@ -9,8 +9,8 @@
 
 namespace Wp_Otp;
 
-use Base32\Base32;
 use OTPHP\TOTP;
+use ParagonIE\ConstantTime\Base32;
 use WP_User;
 
 /**

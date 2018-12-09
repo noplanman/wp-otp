@@ -72,6 +72,7 @@ Yes, just click the `Reconfigure` button on the profile page.
 
 = Unreleased =
 * Add GitLab CI for PHP Code Sniffer.
+* Fix changed Base32 namespace.
 
 = 0.2.0 =
 * Tested for WP 5.0.
