@@ -70,6 +70,9 @@ Yes, just click the `Reconfigure` button on the profile page.
 
 == Changelog ==
 
+= [unreleased] =
+* Update list of OTP mobile apps.
+
 = 0.2.1 =
 * Add GitLab CI for PHP Code Sniffer.
 * Fix changed Base32 namespace.
