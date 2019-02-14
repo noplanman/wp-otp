@@ -60,6 +60,9 @@
 						/></a>&nbsp;
 					<?php foreach ( $app_providers as $app_provider_key => $app_provider ) : ?>
 						<?php
+						if ( ! array_key_exists( 'uri_' . $app_provider_key, $otp_app ) ) {
+							continue;
+						}
 						$get_it_on_text = sprintf(
 							esc_attr__( 'Get it on %s', 'wp-otp' ),
 							$app_provider['name']

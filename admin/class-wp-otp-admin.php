@@ -250,20 +250,31 @@ class Wp_Otp_Admin {
 
 		$otp_apps = [
 			[
-				'name'           => 'FreeOTP',
-				'uri'            => 'https://fedorahosted.org/freeotp/',
-				'uri_app_store'  => 'https://itunes.apple.com/us/app/freeotp-authenticator/id872559395',
-				'uri_play_store' => 'https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp',
-				'uri_f_droid'    => 'https://f-droid.org/repository/browse/?fdid=org.fedorahosted.freeotp',
-				'uri_logo'       => plugins_url( 'images/freeotp.png', __FILE__ ),
+				'name'           => 'andOTP',
+				'uri'            => 'https://github.com/andOTP/andOTP',
+				'uri_play_store' => 'https://play.google.com/store/apps/details?id=org.shadowice.flocke.andotp',
+				'uri_f_droid'    => 'https://f-droid.org/packages/org.shadowice.flocke.andotp',
+				'uri_logo'       => plugins_url( 'images/andotp.png', __FILE__ ),
 			],
 			[
-				'name'           => 'Google Authenticator',
-				'uri'            => 'https://github.com/google/google-authenticator/',
-				'uri_app_store'  => 'https://itunes.apple.com/us/app/google-authenticator/id388497605',
-				'uri_play_store' => 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2',
-				'uri_f_droid'    => 'https://f-droid.org/repository/browse/?fdid=com.google.android.apps.authenticator2',
-				'uri_logo'       => plugins_url( 'images/google-authenticator.png', __FILE__ ),
+				'name'           => 'FreeOTP+',
+				'uri'            => 'https://github.com/helloworld1/FreeOTPPlus',
+				'uri_play_store' => 'https://play.google.com/store/apps/details?id=org.liberty.android.freeotpplus',
+				'uri_f_droid'    => 'https://f-droid.org/en/packages/org.liberty.android.freeotpplus',
+				'uri_logo'       => plugins_url( 'images/freeotpplus.png', __FILE__ ),
+			],
+			[
+				'name'           => 'OTP Authenticator',
+				'uri'            => 'https://www.swiss-safelab.com/en-us/products/otpauthenticator.aspx',
+				'uri_app_store'  => 'https://itunes.apple.com/us/app/otp-authenticator/id915359210',
+				'uri_play_store' => 'https://www.swiss-safelab.com/de-de/community/downloadcenter.aspx?Command=Core_Download&EntryId=684',
+				'uri_logo'       => plugins_url( 'images/otp-authenticator.png', __FILE__ ),
+			],
+			[
+				'name'        => 'OneTimePass',
+				'uri'         => 'https://github.com/OneTimePass/OneTimePass',
+				'uri_f_droid' => 'https://f-droid.org/en/packages/com.github.onetimepass',
+				'uri_logo'    => plugins_url( 'images/onetimepass.png', __FILE__ ),
 			],
 		];
 
