@@ -13,7 +13,7 @@ test:5.6:
   script:
   - php composer.phar check-code
 
-test:7.3-rc:
-  image: php:7.3-rc-cli-alpine
+test:7.3:
+  image: php:7.3-cli-alpine
   script:
   - php composer.phar check-code
