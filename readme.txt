@@ -15,6 +15,8 @@ Make your WordPress login extra secure with One Time Passwords.
 With WP-OTP you can easily set up 2 Factor Authentication with One Time Passwords for your WordPress login.
 This extra layer makes your WordPress site a lot more secure.
 
+The new stealth mode allows for invisible OTP code entry, making your login screen look like any other, no extra OTP code input field.
+
 = Getting started =
 After installing and activating the plugin, every user can enable WP-OTP on their profile page.
 
@@ -28,6 +30,9 @@ Each user gets their own secret key to authenticate with, giving them control ov
 This plugin is completely open source and a work of passion.
 If you would like to be part of it and join in, make your way over to the [project page](https://git.feneas.org/noplanman/wp-otp) now.
 Also, if you have an idea you would like to see in this plugin or if you've found a bug, please [let me know](https://git.feneas.org/noplanman/wp-otp/issues/new).
+
+= Configuration =
+* `WP_OTP_STEALTH`: Set this to `true` to enable stealth OTP mode.
 
 = Filters =
 There are a multitude of filters to be adjusted.
@@ -68,10 +73,15 @@ Be sure to regenerate them when you run out though, or better yet, reconfigure y
 = Can I reset my OTP secret key? =
 Yes, just click the `Reconfigure` button on the profile page.
 
+= Why is there no OTP input field on the login form? =
+Your site admin has either disabled the plugin or enabled stealth mode.
+This means that you will need to add your OTP (or recovery) code at the end of your password.
+
 == Changelog ==
 
 = [unreleased] =
 * Update list of OTP mobile apps.
+* Add stealth mode (via WP_OTP_STEALTH), passing OTP code concatenated to password.
 
 = 0.2.1 =
 * Add GitLab CI for PHP Code Sniffer.

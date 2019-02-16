@@ -34,6 +34,7 @@ class Wp_Otp {
 	 */
 	public function __construct() {
 		$this->load_dependencies();
+		$this->define_constants();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
@@ -80,6 +81,16 @@ class Wp_Otp {
 	}
 
 	/**
+	 * Define the required constants for this plugin.
+	 *
+	 * @since  [unreleased]
+	 * @access private
+	 */
+	private function define_constants() {
+		defined( 'WP_OTP_STEALTH' ) || define( 'WP_OTP_STEALTH', false );
+	}
+
+	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
 	 * @since  0.1.0
@@ -118,6 +129,11 @@ class Wp_Otp {
 	 */
 	private function define_public_hooks() {
 		$plugin_public = new Wp_Otp_Public();
+
+		if ( WP_OTP_STEALTH ) {
+			$this->loader->add_action( 'wp_authenticate', $plugin_public, 'login_form_stealth_validate', 33, 2 );
+			return;
+		}
 
 		$this->loader->add_action( 'login_form', $plugin_public, 'login_form_render' );
 		$this->loader->add_action( 'authenticate', $plugin_public, 'login_form_validate', 33 );
