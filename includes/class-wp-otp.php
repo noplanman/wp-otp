@@ -83,7 +83,7 @@ class Wp_Otp {
 	/**
 	 * Define the required constants for this plugin.
 	 *
-	 * @since  [unreleased]
+	 * @since  0.3.0
 	 * @access private
 	 */
 	private function define_constants() {

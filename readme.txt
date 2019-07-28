@@ -1,12 +1,15 @@
 === WP-OTP ===
 Contributors: noplanman
+Donate link: https://noplanman.ch/donate
 Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, google authenticator
 Requires at least: 3.1.4
-Tested up to: 5.0
-Stable tag: 0.2.1
+Tested up to: 5.2.2
+Stable tag: 0.3.0
+Requires PHP: 5.5
+Author URI: https://noplanman.ch
+Plugin URI: https://git.feneas.org/noplanman/wp-otp
 License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-Donate link: https://noplanman.ch/donate
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Make your WordPress login extra secure with One Time Passwords.
 
@@ -48,6 +51,17 @@ There are a multitude of filters to be adjusted.
 = Minimum requirements =
 WordPress 3.1.4, PHP 5.5.
 
+= Donate / Support =
+
+All [donations](https://noplanman.ch/donate) are much appreciated, thank you 🙏
+
+[Get professional support for this plugin with a Tidelift subscription](https://tidelift.com/subscription/pkg/wordpress-wp-otp?utm_source=wordpress-wp-otp&utm_medium=referral&utm_campaign=readme)
+*Tidelift helps make open source sustainable for maintainers while giving companies assurances about security, maintenance, and licensing for their dependencies.*
+
+= Security =
+
+To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
+
 == Installation ==
 
 You can either use the built in WordPress installer or install the plugin manually.
@@ -79,9 +93,10 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 
 == Changelog ==
 
-= [unreleased] =
+= 0.3.0 =
 * Update list of OTP mobile apps.
 * Add stealth mode (via WP_OTP_STEALTH), passing OTP code concatenated to password.
+* Add donation, support and security sections to readme.
 
 = 0.2.1 =
 * Add GitLab CI for PHP Code Sniffer.

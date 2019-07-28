@@ -166,7 +166,7 @@ class Wp_Otp_Public {
 	/**
 	 * Get the TOTP object if applicable for this user.
 	 *
-	 * @since [unreleased]
+	 * @since 0.3.0
 	 *
 	 * @param Wp_Otp_User_Meta $user_meta_data
 	 *
@@ -183,7 +183,7 @@ class Wp_Otp_Public {
 	/**
 	 * Verify the OTP code using the passed TOTP object.
 	 *
-	 * @since [unreleased]
+	 * @since 0.3.0
 	 *
 	 * @param TOTP   $otp
 	 * @param string $otp_code
