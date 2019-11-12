@@ -35,7 +35,6 @@ class Wp_Otp {
 	public function __construct() {
 		$this->load_dependencies();
 		$this->define_constants();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -56,11 +55,6 @@ class Wp_Otp {
 		 * The class responsible for orchestrating the actions and filters of the core plugin.
 		 */
 		require_once __DIR__ . '/class-wp-otp-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality of the plugin.
-		 */
-		require_once __DIR__ . '/class-wp-otp-i18n.php';
 
 		/**
 		 * The class responsible for managing all user meta data.
@@ -88,18 +82,6 @@ class Wp_Otp {
 	 */
 	private function define_constants() {
 		defined( 'WP_OTP_STEALTH' ) || define( 'WP_OTP_STEALTH', false );
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * @since  0.1.0
-	 * @access private
-	 */
-	private function set_locale() {
-		$plugin_i18n = new Wp_Otp_I18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
 	/**
