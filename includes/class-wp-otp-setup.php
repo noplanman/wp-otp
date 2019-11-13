@@ -12,7 +12,7 @@ namespace Wp_Otp;
 /**
  * Handle all activation, deactivation and uninstallation tasks.
  *
- * @since      0.1.0
+ * @since 0.1.0
  */
 class Wp_Otp_Setup {
 	/**
@@ -23,7 +23,7 @@ class Wp_Otp_Setup {
 	 * @param bool $network_wide TRUE if multisite/network and superadmin uses the "Network Activate" action.
 	 *                           FALSE is no multisite install or plugin gets activated on a single blog.
 	 */
-	public static function activate( $network_wide ) {
+	public static function activate( $network_wide ): void {
 		if ( $network_wide && is_multisite() ) {
 			foreach ( get_sites() as $site ) {
 				switch_to_blog( $site->blog_id );
@@ -44,7 +44,7 @@ class Wp_Otp_Setup {
 	 * @param bool $network_wide TRUE if multisite/network and superadmin uses the "Network Deactivate" action.
 	 *                           FALSE is no multisite install or plugin gets deactivated on a single blog.
 	 */
-	public static function deactivate( $network_wide ) {
+	public static function deactivate( $network_wide ): void {
 		if ( $network_wide && is_multisite() ) {
 			foreach ( get_sites() as $site ) {
 				switch_to_blog( $site->blog_id );
@@ -61,17 +61,17 @@ class Wp_Otp_Setup {
 	 * The actual tasks performed during activation of a plugin.
 	 *
 	 * Should handle only stuff that happens during a single site activation,
-	 * as the process will repeated for each site on a multisite/network installation
+	 * as the process is repeated for each site on a multisite/network installation
 	 * if the plugin is activated network wide.
 	 *
 	 * @since 0.1.0
 	 */
-	private static function do_activation() {
+	private static function do_activation(): void {
 		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}
 
-		$plugin = isset( $_REQUEST['plugin'] ) ? $_REQUEST['plugin'] : '';
+		$plugin = $_REQUEST['plugin'] ?? '';
 		check_admin_referer( "activate-plugin_{$plugin}" );
 	}
 
@@ -79,17 +79,17 @@ class Wp_Otp_Setup {
 	 * The actual tasks performed during deactivation of a plugin.
 	 *
 	 * Should handle only stuff that happens during a single site deactivation,
-	 * as the process will repeated for each site on a multisite/network installation
+	 * as the process is repeated for each site on a multisite/network installation
 	 * if the plugin is deactivated network wide.
 	 *
 	 * @since 0.1.0
 	 */
-	private static function do_deactivation() {
+	private static function do_deactivation(): void {
 		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}
 
-		$plugin = isset( $_REQUEST['plugin'] ) ? $_REQUEST['plugin'] : '';
+		$plugin = $_REQUEST['plugin'] ?? '';
 		check_admin_referer( "deactivate-plugin_{$plugin}" );
 	}
 
@@ -100,7 +100,7 @@ class Wp_Otp_Setup {
 	 *
 	 * @param string $file Path of uninstall.php.
 	 */
-	public static function uninstall( $file ) {
+	public static function uninstall( $file ): void {
 		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}

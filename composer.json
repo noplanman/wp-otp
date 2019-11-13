@@ -2,7 +2,12 @@
     "name": "noplanman/wp-otp",
     "type": "wordpress-plugin",
     "description": "OTP for WordPress",
-    "keywords": ["otp", "totp", "plugin", "wordpress"],
+    "keywords": [
+        "otp",
+        "totp",
+        "plugin",
+        "wordpress"
+    ],
     "license": "GPL-2.0",
     "homepage": "https://git.feneas.org/noplanman/wp-otp",
     "support": {
@@ -17,27 +22,12 @@
             "role": "Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "type": "metapackage",
-                "name": "wp/dummy",
-                "description": "Replace any required packages with a dummy.",
-                "version": "dev-master",
-                "replace": {
-                    "paragonie/random_compat": "*"
-                }
-            }
-        }
-    ],
     "require": {
-        "php": "^5.5|^7.0",
-        "wp/dummy": "@dev",
-        "spomky-labs/otphp": "8.3.3"
+        "php": "^7.1",
+        "spomky-labs/otphp": "^9.1"
     },
     "require-dev": {
-        "wp-coding-standards/wpcs": "^2.1",
+        "wp-coding-standards/wpcs": "^2.2",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0"
     },
     "scripts": {

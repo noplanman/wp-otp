@@ -27,7 +27,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @param string $hook Page on which this hook is called.
 	 */
-	public function enqueue_styles( $hook ) {
+	public function enqueue_styles( $hook ): void {
 		if ( 'profile.php' === $hook ) {
 			wp_enqueue_style( WP_OTP_SLUG . '-admin', plugin_dir_url( __FILE__ ) . 'css/wp-otp-admin.css' );
 		}
@@ -40,7 +40,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @param string $hook Page on which this hook is called.
 	 */
-	public function enqueue_scripts( $hook ) {
+	public function enqueue_scripts( $hook ): void {
 		if ( 'profile.php' === $hook ) {
 			$handle = WP_OTP_SLUG . '-admin';
 
@@ -62,8 +62,9 @@ class Wp_Otp_Admin {
 	 * @param int $user_id
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
-	public function user_profile_updated( $user_id ) {
+	public function user_profile_updated( $user_id ): void {
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
 			return;
 		}
@@ -75,9 +76,10 @@ class Wp_Otp_Admin {
 		// Get the secret.
 		$secret = $user_meta_data->get( 'secret', $this->get_random_secret() );
 
-		$otp = new TOTP( $user->user_login, $secret );
+		$otp = TOTP::create( $secret );
+		$otp->setLabel( $user->user_login );
 
-		$otp_code = isset( $_POST['wp_otp_code'] ) ? $_POST['wp_otp_code'] : '';
+		$otp_code = $_POST['wp_otp_code'] ?? '';
 		if ( $otp_code && ! $user_meta_data->get( 'enabled', false ) ) {
 			/** Filter documented in class-wp-otp-public.php */
 			$otp_window = (int) apply_filters( 'wp_otp_code_expiration_window', 2 );
@@ -119,7 +121,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @since 0.1.0
 	 */
-	public function admin_init() {
+	public function admin_init(): void {
 		if ( isset( $_GET['wp-otp-reconfigure'] ) && 'yes' === $_GET['wp-otp-reconfigure'] ) {
 			Wp_Otp_User_Meta::clear();
 			wp_redirect( get_edit_profile_url() . '#wp_otp' );
@@ -157,8 +159,9 @@ class Wp_Otp_Admin {
 	 * @param null|int $codes_length_override Override the filter and default for the codes length.
 	 *
 	 * @return array
+	 * @throws \Exception
 	 */
-	public function get_random_recovery_codes( $codes_count_override = null, $codes_length_override = null ) {
+	public function get_random_recovery_codes( $codes_count_override = null, $codes_length_override = null ): array {
 		/**
 		 * Filter for the number of random recovery codes to generate (between 1 and 20).
 		 *
@@ -198,8 +201,9 @@ class Wp_Otp_Admin {
 	 * @param null|int $secret_length_override Override the filter and default for the codes count.
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
-	public function get_random_secret( $secret_length_override = null ) {
+	public function get_random_secret( $secret_length_override = null ): string {
 		/**
 		 * Filter for the length of the secret to be generated (between 8 and 64).
 		 *
@@ -219,15 +223,18 @@ class Wp_Otp_Admin {
 	 * @since 0.1.0
 	 *
 	 * @param WP_User $user
+	 *
+	 * @throws \Exception
 	 */
-	public function user_profile_render( $user ) {
+	public function user_profile_render( $user ): void {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
 
 		// Get and save the secret.
 		$secret = $user_meta_data->get( 'secret', $this->get_random_secret() );
 		$user_meta_data->set( 'secret', $secret, true );
 
-		$otp = new TOTP( $user->user_login, $secret );
+		$otp = TOTP::create( $secret );
+		$otp->setLabel( $user->user_login );
 
 		// Issuer isn't allowed to have any colon.
 		$otp->setIssuer( str_replace( [ ':', '%3a', '%3A' ], '', get_bloginfo( 'name' ) ) );
@@ -306,7 +313,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @return void
 	 */
-	public function show_user_notification( array $messages, $type = 'notice' ) {
+	public function show_user_notification( array $messages, $type = 'notice' ): void {
 		if ( empty( $messages ) ) {
 			return;
 		}
@@ -331,7 +338,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @since 0.1.0
 	 */
-	public function admin_notices() {
+	public function admin_notices(): void {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
 
 		/*if ( ! $user_meta_data->get( 'enabled' ) ) {

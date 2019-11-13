@@ -54,7 +54,7 @@ class Wp_Otp_User_Meta {
 	 * @since 0.1.0
 	 * @var array
 	 */
-	private static $user_meta = array();
+	private static $user_meta = [];
 
 	/**
 	 * User ID of the user whose meta data is managed.
@@ -84,7 +84,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public static function get_instance( $user_id = 0 ) {
+	public static function get_instance( $user_id = 0 ): Wp_Otp_User_Meta {
 		if ( null === self::$instance ) {
 			self::$user_id  = $user_id ?: get_current_user_id();
 			self::$instance = new self;
@@ -100,7 +100,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	private function fetch() {
+	private function fetch(): Wp_Otp_User_Meta {
 		if ( 0 === count( self::$user_meta ) ) {
 			self::$user_meta = wp_parse_args(
 				get_user_meta( self::$user_id, self::$user_meta_key, true ),
@@ -145,7 +145,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return array All the user meta.
 	 */
-	public function get_all() {
+	public function get_all(): array {
 		return self::$user_meta;
 	}
 
@@ -160,7 +160,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public function set( $key, $value, $save = false ) {
+	public function set( $key, $value, $save = false ): Wp_Otp_User_Meta {
 		if ( null !== $key ) {
 			if ( null !== $value ) {
 				self::$user_meta[ $key ] = $value;
@@ -184,7 +184,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public function set_all( $metas, $save = false ) {
+	public function set_all( $metas, $save = false ): Wp_Otp_User_Meta {
 		foreach ( $metas as $key => $value ) {
 			$this->set( $key, $value );
 		}
@@ -201,7 +201,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public function save() {
+	public function save(): Wp_Otp_User_Meta {
 		update_user_meta( self::$user_id, self::$user_meta_key, self::$user_meta );
 
 		return $this;
@@ -214,7 +214,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public static function clear() {
+	public static function clear(): Wp_Otp_User_Meta {
 		$user_id = self::$user_id ?: get_current_user_id();
 		if ( delete_user_meta( $user_id, self::$user_meta_key ) ) {
 			// Reset instance.

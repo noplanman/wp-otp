@@ -26,7 +26,7 @@ class Wp_Otp_Public {
 	 *
 	 * @since 0.1.0
 	 */
-	public function login_form_render() {
+	public function login_form_render(): void {
 		/**
 		 * Filter for the OTP login form text.
 		 *
@@ -77,7 +77,7 @@ class Wp_Otp_Public {
 		if ( null === $otp ) {
 			return $user;
 		}
-		$otp_code = isset( $_POST['wp_otp_code'] ) ? $_POST['wp_otp_code'] : '';
+		$otp_code = $_POST['wp_otp_code'] ?? '';
 
 		// If this is a valid OTP code, all good!
 		if ( $this->verify_otp( $otp, $otp_code ) ) {
@@ -116,7 +116,7 @@ class Wp_Otp_Public {
 	 *
 	 * @return void
 	 */
-	public function login_form_stealth_validate( &$username, &$password ) {
+	public function login_form_stealth_validate( &$username, &$password ): void {
 		$user = get_user_by( 'login', $username );
 		if ( ! $user ) {
 			return;
@@ -172,9 +172,9 @@ class Wp_Otp_Public {
 	 *
 	 * @return TOTP
 	 */
-	private function get_otp_if_enabled( $user_meta_data ) {
+	private function get_otp_if_enabled( $user_meta_data ): TOTP {
 		if ( $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
-			return new TOTP( '', $user_meta_data->get( 'secret' ) );
+			return TOTP::create( $user_meta_data->get( 'secret' ) );
 		}
 
 		return null;
@@ -190,7 +190,7 @@ class Wp_Otp_Public {
 	 *
 	 * @return bool
 	 */
-	private function verify_otp( $otp, $otp_code ) {
+	private function verify_otp( $otp, $otp_code ): bool {
 		/**
 		 * Filter for the OTP code expiration window.
 		 *

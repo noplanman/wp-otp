@@ -56,7 +56,7 @@ class Wp_Otp_Loader {
 	 * @param int    $priority      The priority at which the function should be fired. Default is 10.
 	 * @param int    $accepted_args The number of arguments that should be passed to the $callback. Default is 1.
 	 */
-	public function add_action( $hook, $component, $callback = null, $priority = 10, $accepted_args = 1 ) {
+	public function add_action( $hook, $component, $callback = null, $priority = 10, $accepted_args = 1 ): void {
 		$this->actions = $this->add( $this->actions, $hook, $component, $callback ?: $hook, $priority, $accepted_args );
 	}
 
@@ -71,7 +71,7 @@ class Wp_Otp_Loader {
 	 * @param int    $priority      The priority at which the function should be fired. Default is 10.
 	 * @param int    $accepted_args The number of arguments that should be passed to the $callback. Default is 1.
 	 */
-	public function add_filter( $hook, $component, $callback = null, $priority = 10, $accepted_args = 1 ) {
+	public function add_filter( $hook, $component, $callback = null, $priority = 10, $accepted_args = 1 ): void {
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback ?: $hook, $priority, $accepted_args );
 	}
 
@@ -91,7 +91,7 @@ class Wp_Otp_Loader {
 	 *
 	 * @return array The collection of actions and filters registered with WordPress.
 	 */
-	private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
+	private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ): array {
 		$hooks[] = [
 			'hook'          => $hook,
 			'component'     => $component,
@@ -108,7 +108,7 @@ class Wp_Otp_Loader {
 	 *
 	 * @since 0.1.0
 	 */
-	public function run() {
+	public function run(): void {
 		foreach ( $this->filters as $hook ) {
 			add_filter(
 				$hook['hook'],

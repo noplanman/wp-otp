@@ -45,7 +45,7 @@ class Wp_Otp {
 	 * @since  0.1.0
 	 * @access private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies(): void {
 		/**
 		 * The class responsible for activation, deactivation and deletion of the plugin.
 		 */
@@ -80,7 +80,7 @@ class Wp_Otp {
 	 * @since  0.3.0
 	 * @access private
 	 */
-	private function define_constants() {
+	private function define_constants(): void {
 		defined( 'WP_OTP_STEALTH' ) || define( 'WP_OTP_STEALTH', false );
 	}
 
@@ -90,7 +90,7 @@ class Wp_Otp {
 	 * @since  0.1.0
 	 * @access private
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks(): void {
 		$plugin_admin = new Wp_Otp_Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -109,7 +109,7 @@ class Wp_Otp {
 	 * @since  0.1.0
 	 * @access private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks(): void {
 		$plugin_public = new Wp_Otp_Public();
 
 		if ( WP_OTP_STEALTH ) {
@@ -126,7 +126,7 @@ class Wp_Otp {
 	 *
 	 * @since 0.1.0
 	 */
-	public function run() {
+	public function run(): void {
 		$this->loader->run();
 	}
 }

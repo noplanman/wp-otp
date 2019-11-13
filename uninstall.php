@@ -2,9 +2,8 @@
 /**
  * Uninstall the plugin and clean up.
  *
- * @since   0.1.0
- *
  * @package Wp_Otp
+ * @since   0.1.0
  */
 
 namespace Wp_Otp;

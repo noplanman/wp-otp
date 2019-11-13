@@ -1,11 +1,11 @@
 === WP-OTP ===
 Contributors: noplanman
 Donate link: https://noplanman.ch/donate
-Tags: login, 2fa, otp, totp, one time password, security, recovery, freeotp, google authenticator
+Tags: login, 2fa, two factor, otp, totp, one time password, security, recovery, google authenticator
 Requires at least: 4.6
 Tested up to: 5.2.2
 Stable tag: Unreleased
-Requires PHP: 5.5
+Requires PHP: 7.1
 Author URI: https://noplanman.ch
 Plugin URI: https://git.feneas.org/noplanman/wp-otp
 License: GPLv2 or later
@@ -49,7 +49,7 @@ There are a multitude of filters to be adjusted.
 * `wp_otp_secret_length`: Length of the secret key.
 
 = Minimum requirements =
-WordPress 4.6, PHP 5.5.
+WordPress 4.6, PHP 7.1.
 
 = Donate / Support =
 
@@ -95,7 +95,8 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 
 = Unreleased =
 * Drop all custom i18n and rely on translate.wordpress.org.
-* Minimum requirement now WP 4.6.
+* Minimum requirements are now WP 4.6 and PHP 7.1.
+* Update OTPHP to 9.1.
 
 = 0.3.0 =
 * Update list of OTP mobile apps.
@@ -127,3 +128,8 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 
 = 0.1.0 =
 * First version!
+
+== Upgrade Notice ==
+
+= Unreleased =
+Minimum requirements are now WP 4.6 and PHP 7.1!
