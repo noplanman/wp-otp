@@ -3,7 +3,7 @@ Contributors: noplanman
 Donate link: https://noplanman.ch/donate
 Tags: login, 2fa, two factor, otp, totp, one time password, security, recovery, google authenticator
 Requires at least: 4.6
-Tested up to: 5.2.2
+Tested up to: 5.3
 Stable tag: Unreleased
 Requires PHP: 7.1
 Author URI: https://noplanman.ch
@@ -97,6 +97,7 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 * Drop all custom i18n and rely on translate.wordpress.org.
 * Minimum requirements are now WP 4.6 and PHP 7.1.
 * Update OTPHP to 9.1.
+* Tested for WP 5.3.
 
 = 0.3.0 =
 * Update list of OTP mobile apps.

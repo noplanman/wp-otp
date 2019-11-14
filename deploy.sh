@@ -24,13 +24,14 @@ SVN_URL="https://plugins.svn.wordpress.org/${PLUGIN_SLUG}" # Remote SVN repo on 
 SVN_USER="noplanman" # your svn username
 SVN_IGNORE="
 .git
+.github
 .gitignore
 .gitlab-ci.yml
 .scrutinizer.yml
 composer.json
 composer.lock
 deploy.sh
-phpcs.xml"
+phpcs.xml.dist"
 
 # Set the default editors for the commit messages.
 EDITOR="${EDITOR:-${SVN_EDITOR}}"
