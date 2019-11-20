@@ -170,9 +170,9 @@ class Wp_Otp_Public {
 	 *
 	 * @param Wp_Otp_User_Meta $user_meta_data
 	 *
-	 * @return TOTP
+	 * @return null|TOTP
 	 */
-	private function get_otp_if_enabled( $user_meta_data ): TOTP {
+	private function get_otp_if_enabled( $user_meta_data ): ?TOTP {
 		if ( $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
 			return TOTP::create( $user_meta_data->get( 'secret' ) );
 		}

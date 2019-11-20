@@ -4,7 +4,7 @@ Donate link: https://noplanman.ch/donate
 Tags: login, 2fa, two factor, otp, totp, one time password, security, recovery, google authenticator
 Requires at least: 4.6
 Tested up to: 5.3
-Stable tag: 0.4.0
+Stable tag: 0.4.1
 Requires PHP: 7.1
 Author URI: https://noplanman.ch
 Plugin URI: https://git.feneas.org/noplanman/wp-otp
@@ -92,6 +92,9 @@ Your site admin has either disabled the plugin or enabled stealth mode.
 This means that you will need to add your OTP (or recovery) code at the end of your password.
 
 == Changelog ==
+
+= 0.4.1 =
+* Fix nullable return type when checking if OTP is enabled.
 
 = 0.4.0 =
 * Drop all custom i18n and rely on translate.wordpress.org.
