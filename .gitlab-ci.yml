@@ -8,12 +8,14 @@ before_script:
 - curl -sS https://getcomposer.org/installer | php
 - php composer.phar install
 
-test:7.1:
-  image: php:7.1-cli-alpine
-  script:
-  - php composer.phar check-code
+test:7.2:
+  image: php:7.2-cli-alpine
+  script: php composer.phar check-code
 
 test:7.3:
   image: php:7.3-cli-alpine
-  script:
-  - php composer.phar check-code
+  script: php composer.phar check-code
+
+test:7.4:
+  image: php:7.4-cli-alpine
+  script: php composer.phar check-code
