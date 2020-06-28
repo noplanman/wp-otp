@@ -40,6 +40,7 @@ Also, if you have an idea you would like to see in this plugin or if you've foun
 = Filters =
 There are a multitude of filters to be adjusted.
 
+* `wp_otp_qr_code_provisioning_uri`: URI for online QR Code rendering (must contain `{PROVISIONING_URI}` placeholder for QR Code data).
 * `wp_otp_login_form_text`: Text for input field on the login screen.
 * `wp_otp_login_form_text_sub`: Subtext for the input field on the login screen.
 * `wp_otp_login_form_invalid_code_text`: Error text for an invalid code input on the login screen.
@@ -96,6 +97,7 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 = Unreleased =
 * Require at least PHP 7.2.
 * Update OTPHP to 10.0.
+* Add native QR code rendering.
 
 = 0.4.1 =
 * Fix nullable return type when checking if OTP is enabled.

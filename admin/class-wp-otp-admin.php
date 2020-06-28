@@ -9,6 +9,8 @@
 
 namespace Wp_Otp;
 
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
 use WP_User;
@@ -239,6 +241,7 @@ class Wp_Otp_Admin {
 		// Issuer isn't allowed to have any colon.
 		$otp->setIssuer( str_replace( [ ':', '%3a', '%3A' ], '', get_bloginfo( 'name' ) ) );
 
+		$qr_code_provisioning_uri_default = 'https://api.qrserver.com/v1/create-qr-code/?data={PROVISIONING_URI}&qzone=2';
 		/**
 		 * Filter for the OTP QR code provisioning URI.
 		 *
@@ -248,10 +251,20 @@ class Wp_Otp_Admin {
 		 *
 		 * @param string $qr_code_provisioning_uri
 		 */
-		$otp_qr_code_uri = $otp->getQrCodeUri( apply_filters(
-			'wp_otp_qr_code_provisioning_uri',
-			'https://api.qrserver.com/v1/create-qr-code/?data={PROVISIONING_URI}&qzone=2&size=300x300'
-		), '{PROVISIONING_URI}' );
+		$qr_code_provisioning_uri = apply_filters( 'wp_otp_qr_code_provisioning_uri', $qr_code_provisioning_uri_default );
+		$otp_qr_code_img_uri      = $otp->getQrCodeUri( $qr_code_provisioning_uri, '{PROVISIONING_URI}' );
+
+		// If no custom provisioning URI is set, opt for internal QR code processing, if possible.
+		if ( $qr_code_provisioning_uri === $qr_code_provisioning_uri_default ) {
+			try {
+				$qr_code_options     = new QROptions( [ 'quietzoneSize' => 2 ] );
+				$qr_code             = new QRCode( $qr_code_options );
+				$otp_qr_code_raw_uri = $otp->getProvisioningUri();
+				$otp_qr_code_img_uri = $qr_code->render( $otp_qr_code_raw_uri );
+			} catch ( \Throwable $e ) {
+				// Silently fail and fall back to online provisioning.
+			}
+		}
 
 		$otp_enabled = $user_meta_data->get( 'enabled' );
 

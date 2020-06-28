@@ -24,7 +24,8 @@
     ],
     "require": {
         "php": "^7.2",
-        "spomky-labs/otphp": "^10.0"
+        "spomky-labs/otphp": "^10.0",
+        "chillerlan/php-qrcode": "^3.3"
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "^2.3",
