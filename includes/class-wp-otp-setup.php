@@ -71,7 +71,7 @@ class Wp_Otp_Setup {
 			return;
 		}
 
-		$plugin = $_REQUEST['plugin'] ?? '';
+		$plugin = sanitize_key( $_REQUEST['plugin'] ?? '' );
 		check_admin_referer( "activate-plugin_{$plugin}" );
 	}
 
@@ -89,7 +89,7 @@ class Wp_Otp_Setup {
 			return;
 		}
 
-		$plugin = $_REQUEST['plugin'] ?? '';
+		$plugin = sanitize_key( $_REQUEST['plugin'] ?? '' );
 		check_admin_referer( "deactivate-plugin_{$plugin}" );
 	}
 

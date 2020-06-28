@@ -13,6 +13,7 @@ use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
+use Throwable;
 use WP_User;
 
 /**
@@ -31,7 +32,7 @@ class Wp_Otp_Admin {
 	 */
 	public function enqueue_styles( $hook ): void {
 		if ( 'profile.php' === $hook ) {
-			wp_enqueue_style( WP_OTP_SLUG . '-admin', plugin_dir_url( __FILE__ ) . 'css/wp-otp-admin.css' );
+			wp_enqueue_style( WP_OTP_SLUG . '-admin', plugin_dir_url( __FILE__ ) . 'css/wp-otp-admin.css', [], WP_OTP_VERSION );
 		}
 	}
 
@@ -46,12 +47,10 @@ class Wp_Otp_Admin {
 		if ( 'profile.php' === $hook ) {
 			$handle = WP_OTP_SLUG . '-admin';
 
-			wp_enqueue_script( $handle, plugin_dir_url( __FILE__ ) . 'js/wp-otp-admin.js', [ 'jquery' ], null, true );
+			wp_enqueue_script( $handle, plugin_dir_url( __FILE__ ) . 'js/wp-otp-admin.js', [ 'jquery' ], WP_OTP_VERSION, true );
 			wp_localize_script( $handle, 'wp_otp', [
-				'confirm_reconfigure'        =>
-					__( 'Are you sure you want to reconfigure WP-OTP?', 'wp-otp' ),
-				'confirm_new_recovery_codes' =>
-					__( 'Are you sure you want to regenerate your recovery codes?', 'wp-otp' ),
+				'confirm_reconfigure'        => __( 'Are you sure you want to reconfigure WP-OTP?', 'wp-otp' ),
+				'confirm_new_recovery_codes' => __( 'Are you sure you want to regenerate your recovery codes?', 'wp-otp' ),
 			] );
 		}
 	}
@@ -61,15 +60,16 @@ class Wp_Otp_Admin {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param int $user_id
+	 * @param int $user_id WordPress User ID.
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
 	public function user_profile_updated( $user_id ): void {
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
 			return;
 		}
+
+		check_admin_referer( 'wp_otp_code', 'wp_otp_code' );
 
 		$user = get_userdata( $user_id );
 
@@ -81,7 +81,7 @@ class Wp_Otp_Admin {
 		$otp = TOTP::create( $secret );
 		$otp->setLabel( $user->user_login );
 
-		$otp_code = $_POST['wp_otp_code'] ?? '';
+		$otp_code = sanitize_key( $_POST['wp_otp_code'] ?? '' );
 		if ( $otp_code && ! $user_meta_data->get( 'enabled', false ) ) {
 			/** Filter documented in class-wp-otp-public.php */
 			$otp_window = (int) apply_filters( 'wp_otp_code_expiration_window', 2 );
@@ -124,13 +124,15 @@ class Wp_Otp_Admin {
 	 * @since 0.1.0
 	 */
 	public function admin_init(): void {
-		if ( isset( $_GET['wp-otp-reconfigure'] ) && 'yes' === $_GET['wp-otp-reconfigure'] ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 'yes' === ( sanitize_key( $_GET['wp-otp-reconfigure'] ?? '' ) ) ) {
 			Wp_Otp_User_Meta::clear();
-			wp_redirect( get_edit_profile_url() . '#wp_otp' );
+			wp_safe_redirect( get_edit_profile_url() . '#wp_otp' );
 			exit;
 		}
 
-		if ( isset( $_GET['wp-otp-new-recovery-codes'] ) && 'yes' === $_GET['wp-otp-new-recovery-codes'] ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 'yes' === ( sanitize_key( $_GET['wp-otp-new-recovery-codes'] ?? '' ) ) ) {
 			$otp_recovery_codes = $this->get_random_recovery_codes();
 			Wp_Otp_User_Meta::get_instance()->set_all( [
 				'recovery_codes' => $otp_recovery_codes,
@@ -145,7 +147,7 @@ class Wp_Otp_Admin {
 				],
 			], true );
 
-			wp_redirect( get_edit_profile_url() );
+			wp_safe_redirect( get_edit_profile_url() );
 			exit;
 		}
 	}
@@ -161,7 +163,6 @@ class Wp_Otp_Admin {
 	 * @param null|int $codes_length_override Override the filter and default for the codes length.
 	 *
 	 * @return array
-	 * @throws \Exception
 	 */
 	public function get_random_recovery_codes( $codes_count_override = null, $codes_length_override = null ): array {
 		/**
@@ -185,8 +186,9 @@ class Wp_Otp_Admin {
 		$codes_length = min( max( 8, $codes_length ), 64 );
 
 		$codes = [];
+		// phpcs:ignore Squiz.PHP.DisallowSizeFunctionsInLoops.Found
 		while ( count( $codes ) < $codes_count ) {
-			$code = substr( bin2hex( random_bytes( 32 ) ), 0, $codes_length );
+			$code = $this->get_random_hash( $codes_length );
 			if ( ! array_key_exists( $code, $codes ) ) {
 				$codes[ $code ] = true;
 			}
@@ -203,7 +205,6 @@ class Wp_Otp_Admin {
 	 * @param null|int $secret_length_override Override the filter and default for the codes count.
 	 *
 	 * @return string
-	 * @throws \Exception
 	 */
 	public function get_random_secret( $secret_length_override = null ): string {
 		/**
@@ -216,7 +217,30 @@ class Wp_Otp_Admin {
 		$secret_length = $secret_length_override ?: (int) apply_filters( 'wp_otp_secret_length', 16 );
 		$secret_length = min( max( 8, $secret_length ), 64 );
 
-		return substr( Base32::encode( random_bytes( 42 ) ), 0, $secret_length );
+		return $this->get_random_hash( $secret_length );
+	}
+
+	/**
+	 * Get a random hash string of up to 100 characters.
+	 *
+	 * @since Unreleased
+	 *
+	 * @param int $length Length of the random hash (max 100).
+	 *
+	 * @return string
+	 */
+	public function get_random_hash( $length = 0 ): string {
+		try {
+			$random_hash = Base32::encode( random_bytes( 64 ) );
+		} catch ( Throwable $e ) {
+			$random_hash = Base32::encode( md5( microtime( true ) ) . md5( microtime( true ) ) );
+		}
+
+		if ( $length <= 0 ) {
+			return substr( $random_hash, 0, 100 );
+		}
+
+		return substr( $random_hash, 0, min( $length, 100 ) );
 	}
 
 	/**
@@ -224,9 +248,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param WP_User $user
-	 *
-	 * @throws \Exception
+	 * @param WP_User $user WordPress User Object.
 	 */
 	public function user_profile_render( $user ): void {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
@@ -252,7 +274,6 @@ class Wp_Otp_Admin {
 		 * @param string $qr_code_provisioning_uri
 		 */
 		$qr_code_provisioning_uri = apply_filters( 'wp_otp_qr_code_provisioning_uri', $qr_code_provisioning_uri_default );
-		$otp_qr_code_img_uri      = $otp->getQrCodeUri( $qr_code_provisioning_uri, '{PROVISIONING_URI}' );
 
 		// If no custom provisioning URI is set, opt for internal QR code processing, if possible.
 		if ( $qr_code_provisioning_uri === $qr_code_provisioning_uri_default ) {
@@ -261,9 +282,13 @@ class Wp_Otp_Admin {
 				$qr_code             = new QRCode( $qr_code_options );
 				$otp_qr_code_raw_uri = $otp->getProvisioningUri();
 				$otp_qr_code_img_uri = $qr_code->render( $otp_qr_code_raw_uri );
-			} catch ( \Throwable $e ) {
-				// Silently fail and fall back to online provisioning.
+			} catch ( Throwable $e ) {
+				$otp_qr_code_img_uri = null;
 			}
+		}
+
+		if ( ! isset( $otp_qr_code_img_uri ) ) {
+			$otp_qr_code_img_uri = $otp->getQrCodeUri( $qr_code_provisioning_uri, '{PROVISIONING_URI}' );
 		}
 
 		$otp_enabled = $user_meta_data->get( 'enabled' );
@@ -339,7 +364,7 @@ class Wp_Otp_Admin {
 		$class   = $classes[ array_key_exists( $type, $classes ) ? $type : 'notice' ];
 		?>
 		<div id="message" class="<?php echo esc_attr( $class ); ?>">
-			<p><?php echo implode( '<br>', $messages ); ?></p>
+			<p><?php echo implode( '<br>', $messages ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 		</div>
 		<?php
 	}
@@ -354,24 +379,14 @@ class Wp_Otp_Admin {
 	public function admin_notices(): void {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
 
-		/*if ( ! $user_meta_data->get( 'enabled' ) ) {
-			$this->show_user_notification( [
-				__( '<strong>Note:</strong> You have not configured WP-OTP yet.', 'wp-otp' ),
-				sprintf(
-					'<a href="%1$s#wp_otp" class="button">%2$s</a>',
-					get_edit_profile_url(),
-					_x( 'Configure now', 'Link text to go to WP-OTP section in user profile', 'wp-otp' )
-				),
-			] );
-		} else {*/
 		if ( $user_meta_data->get( 'enabled' ) ) {
 			$recovery_codes       = array_filter( $user_meta_data->get( 'recovery_codes' ) );
 			$recovery_codes_count = count( $recovery_codes );
 			if ( $recovery_codes_count < 3 ) {
 				$this->show_user_notification( [
-					'<strong>' . __( 'Important', 'wp-otp' ) . '</strong>',
+					'<strong>' . esc_html__( 'Important', 'wp-otp' ) . '</strong>',
 					sprintf(
-						_n(
+						_n( // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 							'You have %d WP-OTP recovery code left. You should generate new ones.',
 							'You have %d WP-OTP recovery codes left. You should generate new ones.',
 							$recovery_codes_count,
@@ -381,8 +396,8 @@ class Wp_Otp_Admin {
 					),
 					sprintf(
 						'<a href="%1$s" class="button">%2$s</a>',
-						add_query_arg( 'wp-otp-new-recovery-codes', 'yes', get_edit_profile_url() ),
-						_x( 'Regenerate', 'Link to regenerate the WP-OTP recovery codes', 'wp-otp' )
+						esc_url( add_query_arg( 'wp-otp-new-recovery-codes', 'yes', get_edit_profile_url() ) ),
+						esc_html_x( 'Regenerate', 'Link to regenerate the WP-OTP recovery codes', 'wp-otp' )
 					),
 				], 'error' );
 			}
