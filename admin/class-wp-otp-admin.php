@@ -295,11 +295,24 @@ class Wp_Otp_Admin {
 
 		$otp_apps = [
 			[
+				'name'           => 'Aegis Authenticator',
+				'uri'            => 'https://getaegis.app/',
+				'uri_play_store' => 'https://play.google.com/store/apps/details?id=com.beemdevelopment.aegis',
+				'uri_f_droid'    => 'https://f-droid.org/en/packages/com.beemdevelopment.aegis',
+				'uri_logo'       => plugins_url( 'images/aegis.png', __FILE__ ),
+			],
+			[
 				'name'           => 'andOTP',
 				'uri'            => 'https://github.com/andOTP/andOTP',
 				'uri_play_store' => 'https://play.google.com/store/apps/details?id=org.shadowice.flocke.andotp',
 				'uri_f_droid'    => 'https://f-droid.org/packages/org.shadowice.flocke.andotp',
 				'uri_logo'       => plugins_url( 'images/andotp.png', __FILE__ ),
+			],
+			[
+				'name'        => 'OneTimePass',
+				'uri'         => 'https://github.com/OneTimePass/OneTimePass',
+				'uri_f_droid' => 'https://f-droid.org/en/packages/com.github.onetimepass',
+				'uri_logo'    => plugins_url( 'images/onetimepass.png', __FILE__ ),
 			],
 			[
 				'name'           => 'FreeOTP+',
@@ -314,12 +327,6 @@ class Wp_Otp_Admin {
 				'uri_app_store'  => 'https://itunes.apple.com/us/app/otp-authenticator/id915359210',
 				'uri_play_store' => 'https://www.swiss-safelab.com/de-de/community/downloadcenter.aspx?Command=Core_Download&EntryId=684',
 				'uri_logo'       => plugins_url( 'images/otp-authenticator.png', __FILE__ ),
-			],
-			[
-				'name'        => 'OneTimePass',
-				'uri'         => 'https://github.com/OneTimePass/OneTimePass',
-				'uri_f_droid' => 'https://f-droid.org/en/packages/com.github.onetimepass',
-				'uri_logo'    => plugins_url( 'images/onetimepass.png', __FILE__ ),
 			],
 		];
 
