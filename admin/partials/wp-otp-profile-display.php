@@ -42,7 +42,7 @@
 			<?php endif; ?>
 		</th>
 		<td>
-			<img src="<?php echo $otp_qr_code_uri; ?>"/><br>
+			<img src="<?php echo $otp_qr_code_img_uri; ?>" alt="<?php _e( 'QR Code to scan with mobile app', 'wp-otp' ); ?>"/><br>
 		</td>
 		<td>
 			<span class="description">
