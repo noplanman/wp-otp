@@ -223,7 +223,7 @@ class Wp_Otp_Admin {
 	/**
 	 * Get a random hash string of up to 100 characters.
 	 *
-	 * @since Unreleased
+	 * @since 0.5.0
 	 *
 	 * @param int $length Length of the random hash (max 100).
 	 *
