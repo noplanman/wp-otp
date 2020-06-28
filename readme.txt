@@ -98,6 +98,7 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 * Require at least PHP 7.2.
 * Update OTPHP to 10.0.
 * Add native QR code rendering.
+* Harden security by adhering to WordPress Code Sniffer.
 
 = 0.4.1 =
 * Fix nullable return type when checking if OTP is enabled.

@@ -87,7 +87,7 @@ class Wp_Otp_User_Meta {
 	public static function get_instance( $user_id = 0 ): Wp_Otp_User_Meta {
 		if ( null === self::$instance ) {
 			self::$user_id  = $user_id ?: get_current_user_id();
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -126,10 +126,14 @@ class Wp_Otp_User_Meta {
 			if ( isset( self::$user_meta[ $key ] ) ) {
 				// Return found option value.
 				return self::$user_meta[ $key ];
-			} elseif ( null !== $default ) {
+			}
+
+			if ( null !== $default ) {
 				// Return overridden default value.
 				return $default;
-			} elseif ( isset( self::$default_user_meta[ $key ] ) ) {
+			}
+
+			if ( isset( self::$default_user_meta[ $key ] ) ) {
 				// Return default option value.
 				return self::$default_user_meta[ $key ];
 			}

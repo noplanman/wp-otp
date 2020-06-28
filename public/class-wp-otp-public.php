@@ -12,6 +12,7 @@
 namespace Wp_Otp;
 
 use OTPHP\TOTP;
+use OTPHP\TOTPInterface;
 use WP_Error;
 use WP_User;
 
@@ -52,8 +53,8 @@ class Wp_Otp_Public {
 		);
 		?>
 		<p>
-			<label for="wp_otp_code"><?php echo $otp_text; ?></label><br/>
-			<?php '' !== $otp_text_sub && printf( '<em>%s</em>', $otp_text_sub ); ?>
+			<label for="wp_otp_code"><?php echo wp_kses_data( $otp_text ); ?></label><br/>
+			<?php '' !== $otp_text_sub && print wp_kses_data( sprintf( '<em>%s</em>', $otp_text_sub ) ); ?>
 			<input type="text" class="input" name="wp_otp_code" id="wp_otp_code"/>
 		</p>
 		<?php
@@ -77,7 +78,10 @@ class Wp_Otp_Public {
 		if ( null === $otp ) {
 			return $user;
 		}
-		$otp_code = $_POST['wp_otp_code'] ?? '';
+
+		// We can safely ignore the PHPCS error here, as this gets handled by WP.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$otp_code = sanitize_key( $_POST['wp_otp_code'] ?? '' );
 
 		// If this is a valid OTP code, all good!
 		if ( $this->verify_otp( $otp, $otp_code ) ) {
@@ -137,8 +141,8 @@ class Wp_Otp_Public {
 		}
 
 		// First let's check for a valid OTP code input.
-		$otp_code = substr( $password, - 6 );
-		$tmp_pass = substr( $password, 0, - 6 );
+		$otp_code = substr( $password, -6 );
+		$tmp_pass = substr( $password, 0, -6 );
 		if ( wp_check_password( $tmp_pass, $user->user_pass, $user->ID ) && $this->verify_otp( $otp, $otp_code ) ) {
 			$password = $tmp_pass;
 			return;
@@ -147,12 +151,12 @@ class Wp_Otp_Public {
 		// Then check if it's a recovery code.
 		$recovery_codes = $user_meta_data->get( 'recovery_codes' );
 		foreach ( array_keys( array_filter( $recovery_codes ) ) as $recovery_code ) {
-			$otp_code = substr( $password, - strlen( $recovery_code ) );
+			$otp_code = substr( $password, -strlen( $recovery_code ) );
 			if ( $otp_code !== $recovery_code ) {
 				continue;
 			}
 
-			$tmp_pass = substr( $password, 0, - strlen( $recovery_code ) );
+			$tmp_pass = substr( $password, 0, -strlen( $recovery_code ) );
 			if ( wp_check_password( $tmp_pass, $user->user_pass, $user->ID ) ) {
 				// Unset the recovery code that has just been used.
 				$recovery_codes[ $otp_code ] = false;
@@ -168,11 +172,11 @@ class Wp_Otp_Public {
 	 *
 	 * @since 0.3.0
 	 *
-	 * @param Wp_Otp_User_Meta $user_meta_data
+	 * @param Wp_Otp_User_Meta $user_meta_data Meta data object of the user.
 	 *
-	 * @return null|TOTP
+	 * @return TOTPInterface|null
 	 */
-	private function get_otp_if_enabled( $user_meta_data ): ?TOTP {
+	private function get_otp_if_enabled( $user_meta_data ): ?TOTPInterface {
 		if ( $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
 			return TOTP::create( $user_meta_data->get( 'secret' ) );
 		}
@@ -185,8 +189,8 @@ class Wp_Otp_Public {
 	 *
 	 * @since 0.3.0
 	 *
-	 * @param TOTP   $otp
-	 * @param string $otp_code
+	 * @param TOTP   $otp      OTP object.
+	 * @param string $otp_code OTP code to be verified.
 	 *
 	 * @return bool
 	 */
