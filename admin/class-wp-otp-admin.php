@@ -246,12 +246,12 @@ class Wp_Otp_Admin {
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param string $otp_window
+		 * @param string $qr_code_provisioning_uri
 		 */
 		$otp_qr_code_uri = $otp->getQrCodeUri( apply_filters(
 			'wp_otp_qr_code_provisioning_uri',
 			'https://api.qrserver.com/v1/create-qr-code/?data={PROVISIONING_URI}&qzone=2&size=300x300'
-		) );
+		), '{PROVISIONING_URI}' );
 
 		$otp_enabled = $user_meta_data->get( 'enabled' );
 
