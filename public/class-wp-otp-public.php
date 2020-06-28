@@ -189,8 +189,8 @@ class Wp_Otp_Public {
 	 *
 	 * @since 0.3.0
 	 *
-	 * @param TOTP   $otp      OTP object.
-	 * @param string $otp_code OTP code to be verified.
+	 * @param TOTPInterface $otp      OTP object.
+	 * @param string        $otp_code OTP code to be verified.
 	 *
 	 * @return bool
 	 */

@@ -112,6 +112,7 @@ echo " ✅ Done."
 echo
 
 printf "Exporting the HEAD of master from git to the trunk of SVN..."
+rm -rf "${SVN_PATH}/trunk"/*
 git checkout-index -a -f --prefix="${SVN_PATH}/trunk/"
 if [[ -d "${SVN_PATH}/trunk/assets" ]]; then
     mv -f "${SVN_PATH}/trunk/assets"/* "${SVN_PATH}/assets"
@@ -136,7 +137,7 @@ printf " - Removing deleted files..."
 svn status | grep -v "^.[ \t]*\..*" | grep "^\!" | awk '{print $2}' | xargs svn del &>/dev/null
 echo " ✅ Done."
 printf " - Commit assets..."
-svn commit --username="${SVN_USER}"
+svn commit --username="${SVN_USER}" -m "Version ${NEW_VERSION}"
 echo " ✅ Done!"
 
 echo
@@ -168,7 +169,7 @@ svn status | grep -v "^.[ \t]*\..*" | grep "^\!" | awk '{print $2}' | xargs svn 
 echo " ✅ Done."
 
 printf " - Commit to trunk..."
-svn commit --username="${SVN_USER}"
+svn commit --username="${SVN_USER}" -m "Version ${NEW_VERSION}"
 echo " ✅ Done!"
 
 echo

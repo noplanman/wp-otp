@@ -69,7 +69,7 @@ class Wp_Otp_Admin {
 			return;
 		}
 
-		check_admin_referer( 'wp_otp_code', 'wp_otp_code' );
+		check_admin_referer( 'wp_otp_nonce', 'wp_otp_nonce' );
 
 		$user = get_userdata( $user_id );
 
