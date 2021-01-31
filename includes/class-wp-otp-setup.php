@@ -20,6 +20,9 @@ class Wp_Otp_Setup {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @todo  Type declaration blocked by:
+	 *        https://core.trac.wordpress.org/ticket/36406
+	 *
 	 * @param bool $network_wide TRUE if multisite/network and superadmin uses the "Network Activate" action.
 	 *                           FALSE is no multisite install or plugin gets activated on a single blog.
 	 */
@@ -44,7 +47,7 @@ class Wp_Otp_Setup {
 	 * @param bool $network_wide TRUE if multisite/network and superadmin uses the "Network Deactivate" action.
 	 *                           FALSE is no multisite install or plugin gets deactivated on a single blog.
 	 */
-	public static function deactivate( $network_wide ): void {
+	public static function deactivate( bool $network_wide ): void {
 		if ( $network_wide && is_multisite() ) {
 			foreach ( get_sites() as $site ) {
 				switch_to_blog( $site->blog_id );
@@ -100,7 +103,7 @@ class Wp_Otp_Setup {
 	 *
 	 * @param string $file Path of uninstall.php.
 	 */
-	public static function uninstall( $file ): void {
+	public static function uninstall( string $file ): void {
 		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}

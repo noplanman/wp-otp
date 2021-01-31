@@ -53,9 +53,9 @@ class Wp_Otp_Public {
 		);
 		?>
 		<p>
-			<label for="wp_otp_code"><?php echo wp_kses_data( $otp_text ); ?></label><br/>
+			<label for="wp-otp-code"><?php echo wp_kses_data( $otp_text ); ?></label><br/>
 			<?php '' !== $otp_text_sub && print wp_kses_data( sprintf( '<em>%s</em>', $otp_text_sub ) ); ?>
-			<input type="text" class="input" name="wp_otp_code" id="wp_otp_code"/>
+			<input type="text" class="input" name="wp-otp-code" id="wp-otp-code"/>
 		</p>
 		<?php
 	}
@@ -63,7 +63,7 @@ class Wp_Otp_Public {
 	/**
 	 * Validation of the user login, to check if the OTP was correct.
 	 *
-	 * @param WP_User $user The user that's trying to log in.
+	 * @param null|WP_User|WP_Error $user The user that's trying to log in.
 	 *
 	 * @return WP_Error|WP_User
 	 */
@@ -81,7 +81,7 @@ class Wp_Otp_Public {
 
 		// We can safely ignore the PHPCS error here, as this gets handled by WP.
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$otp_code = sanitize_key( $_POST['wp_otp_code'] ?? '' );
+		$otp_code = sanitize_key( $_POST['wp-otp-code'] ?? '' );
 
 		// If this is a valid OTP code, all good!
 		if ( $this->verify_otp( $otp, $otp_code ) ) {
@@ -115,12 +115,12 @@ class Wp_Otp_Public {
 	/**
 	 * Validation of the user login, to check if the stealth OTP was correct.
 	 *
-	 * @param string $username The username that's trying to log in.
-	 * @param string $password The password being used to log in.
+	 * @param string|null $username The username that's trying to log in.
+	 * @param string|null $password The password being used to log in.
 	 *
 	 * @return void
 	 */
-	public function login_form_stealth_validate( &$username, &$password ): void {
+	public function login_form_stealth_validate( ?string $username, ?string &$password ): void {
 		$user = get_user_by( 'login', $username );
 		if ( ! $user ) {
 			return;
@@ -144,7 +144,7 @@ class Wp_Otp_Public {
 		$otp_code = substr( $password, -6 );
 		$tmp_pass = substr( $password, 0, -6 );
 		if ( wp_check_password( $tmp_pass, $user->user_pass, $user->ID ) && $this->verify_otp( $otp, $otp_code ) ) {
-			$password = $tmp_pass;
+			$password = (string) $tmp_pass;
 			return;
 		}
 
@@ -161,7 +161,7 @@ class Wp_Otp_Public {
 				// Unset the recovery code that has just been used.
 				$recovery_codes[ $otp_code ] = false;
 				$user_meta_data->set( 'recovery_codes', $recovery_codes, true );
-				$password = $tmp_pass;
+				$password = (string) $tmp_pass;
 				return;
 			}
 		}
@@ -176,7 +176,7 @@ class Wp_Otp_Public {
 	 *
 	 * @return TOTPInterface|null
 	 */
-	private function get_otp_if_enabled( $user_meta_data ): ?TOTPInterface {
+	private function get_otp_if_enabled( Wp_Otp_User_Meta $user_meta_data ): ?TOTPInterface {
 		if ( $user_meta_data->get( 'enabled' ) && null !== $user_meta_data->get( 'secret' ) ) {
 			return TOTP::create( $user_meta_data->get( 'secret' ) );
 		}
@@ -194,7 +194,7 @@ class Wp_Otp_Public {
 	 *
 	 * @return bool
 	 */
-	private function verify_otp( $otp, $otp_code ): bool {
+	private function verify_otp( TOTPInterface $otp, string $otp_code ): bool {
 		/**
 		 * Filter for the OTP code expiration window.
 		 *
