@@ -19,9 +19,9 @@ class Wp_Otp_User_Meta {
 	 * Instance of this class.
 	 *
 	 * @since 0.1.0
-	 * @var Wp_Otp_User_Meta
+	 * @var Wp_Otp_User_Meta|null
 	 */
-	private static $instance;
+	private static ?Wp_Otp_User_Meta $instance = null;
 
 	/**
 	 * Meta key to save the data in the user options.
@@ -29,7 +29,7 @@ class Wp_Otp_User_Meta {
 	 * @since 0.1.0
 	 * @var string
 	 */
-	private static $user_meta_key = WP_OTP_SLUG;
+	private static string $user_meta_key = WP_OTP_SLUG;
 
 	/**
 	 * All default user meta.
@@ -37,7 +37,7 @@ class Wp_Otp_User_Meta {
 	 * @since 0.1.0
 	 * @var array
 	 */
-	private static $default_user_meta = [
+	private static array $default_user_meta = [
 		'counter' => null,
 		'digest'  => 'sha1',
 		'digits'  => 6,
@@ -54,7 +54,7 @@ class Wp_Otp_User_Meta {
 	 * @since 0.1.0
 	 * @var array
 	 */
-	private static $user_meta = [];
+	private static array $user_meta = [];
 
 	/**
 	 * User ID of the user whose meta data is managed.
@@ -62,7 +62,7 @@ class Wp_Otp_User_Meta {
 	 * @since 0.1.0
 	 * @var int
 	 */
-	private static $user_id = 0;
+	private static int $user_id = 0;
 
 	/**
 	 * Preload the user metadata on initialisation.
@@ -164,7 +164,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public function set( $key, $value, $save = false ): Wp_Otp_User_Meta {
+	public function set( string $key, $value, bool $save = false ): Wp_Otp_User_Meta {
 		if ( null !== $key ) {
 			if ( null !== $value ) {
 				self::$user_meta[ $key ] = $value;
@@ -188,7 +188,7 @@ class Wp_Otp_User_Meta {
 	 *
 	 * @return Wp_Otp_User_Meta Instance of this class.
 	 */
-	public function set_all( $metas, $save = false ): Wp_Otp_User_Meta {
+	public function set_all( array $metas, bool $save = false ): Wp_Otp_User_Meta {
 		foreach ( $metas as $key => $value ) {
 			$this->set( $key, $value );
 		}

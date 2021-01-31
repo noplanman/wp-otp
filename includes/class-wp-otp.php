@@ -21,7 +21,7 @@ class Wp_Otp {
 	 * @access private
 	 * @var    Wp_Otp_Loader $loader
 	 */
-	private $loader;
+	private Wp_Otp_Loader $loader;
 
 	/**
 	 * Define the core functionality of the plugin.

@@ -9,13 +9,13 @@
 
 ?>
 
-<a name="wp_otp"></a>
+<a id="wp-otp"></a>
 <h2><?php esc_html_e( 'Set up WP-OTP (WordPress One Time Password)', 'wp-otp' ); ?></h2>
 <table class="form-table">
 	<tr>
 		<th scope="row">
 			<?php esc_html_e( 'OTP Secret', 'wp-otp' ); ?>:<br>
-			<?php echo esc_html( implode( ' ', str_split( $secret, 4 ) ) ); ?><br><br>
+			<?php echo esc_html( chunk_split( $secret, 4, ' ' ) ); ?><br><br>
 			<?php if ( $otp_enabled ) : ?>
 				<?php
 				printf(
@@ -41,8 +41,8 @@
 				</div>
 			<?php else : ?>
 				<em><?php esc_html_e( 'To activate WP-OTP, enter the One Time Password from your authenticator app and save your profile.', 'wp-otp' ); ?></em><br><br>
-				<label for="wp_otp_code"><?php esc_html_e( 'One Time Password', 'wp-otp' ); ?></label><br>
-				<input type="text" class="input" name="wp_otp_code" id="wp_otp_code"/>
+				<label for="wp-otp-code"><?php esc_html_e( 'One Time Password', 'wp-otp' ); ?></label><br>
+				<input type="text" class="input" name="wp-otp-code" id="wp-otp-code"/>
 				<?php wp_nonce_field( 'wp_otp_nonce', 'wp_otp_nonce', false ); ?>
 			<?php endif; ?>
 		</th>

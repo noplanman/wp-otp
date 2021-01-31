@@ -30,7 +30,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @param string $hook Page on which this hook is called.
 	 */
-	public function enqueue_styles( $hook ): void {
+	public function enqueue_styles( string $hook ): void {
 		if ( 'profile.php' === $hook ) {
 			wp_enqueue_style( WP_OTP_SLUG . '-admin', plugin_dir_url( __FILE__ ) . 'css/wp-otp-admin.css', [], WP_OTP_VERSION );
 		}
@@ -43,7 +43,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @param string $hook Page on which this hook is called.
 	 */
-	public function enqueue_scripts( $hook ): void {
+	public function enqueue_scripts( string $hook ): void {
 		if ( 'profile.php' === $hook ) {
 			$handle = WP_OTP_SLUG . '-admin';
 
@@ -64,7 +64,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @return void
 	 */
-	public function user_profile_updated( $user_id ): void {
+	public function user_profile_updated( int $user_id ): void {
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
 			return;
 		}
@@ -81,7 +81,7 @@ class Wp_Otp_Admin {
 		$otp = TOTP::create( $secret );
 		$otp->setLabel( $user->user_login );
 
-		$otp_code = sanitize_key( $_POST['wp_otp_code'] ?? '' );
+		$otp_code = sanitize_key( $_POST['wp-otp-code'] ?? '' );
 		if ( $otp_code && ! $user_meta_data->get( 'enabled', false ) ) {
 			/** Filter documented in class-wp-otp-public.php */
 			$otp_window = (int) apply_filters( 'wp_otp_code_expiration_window', 2 );
@@ -127,7 +127,7 @@ class Wp_Otp_Admin {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( 'yes' === ( sanitize_key( $_GET['wp-otp-reconfigure'] ?? '' ) ) ) {
 			Wp_Otp_User_Meta::clear();
-			wp_safe_redirect( get_edit_profile_url() . '#wp_otp' );
+			wp_safe_redirect( get_edit_profile_url() . '#wp-otp' );
 			exit;
 		}
 
@@ -250,7 +250,7 @@ class Wp_Otp_Admin {
 	 *
 	 * @param WP_User $user WordPress User Object.
 	 */
-	public function user_profile_render( $user ): void {
+	public function user_profile_render( WP_User $user ): void {
 		$user_meta_data = Wp_Otp_User_Meta::get_instance();
 
 		// Get and save the secret.

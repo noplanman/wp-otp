@@ -95,7 +95,8 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 == Changelog ==
 
 = unreleased =
-* Require at least PHP 7.4.
+* Require at least PHP 7.4 and update all code.
+* Allow for PHP 8.0.
 * Bump dependencies.
 
 = 0.5.1 =
