@@ -47,7 +47,7 @@
 			<?php endif; ?>
 		</th>
 		<td>
-			<img id="wp_otp_qr_code" src="<?php echo esc_attr( $otp_qr_code_img_uri ); ?>" alt="<?php esc_attr_e( 'QR Code to scan with mobile app', 'wp-otp' ); ?>"/><br>
+			<img id="wp-otp-qr-code" src="<?php echo esc_attr( $otp_qr_code_img_uri ); ?>" alt="<?php esc_attr_e( 'QR Code to scan with mobile app', 'wp-otp' ); ?>"/><br>
 		</td>
 		<td>
 			<span class="description">

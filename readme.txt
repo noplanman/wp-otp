@@ -3,9 +3,9 @@ Contributors: noplanman
 Donate link: https://noplanman.ch/donate
 Tags: login, 2fa, two factor, otp, totp, one time password, security, recovery, google authenticator
 Requires at least: 4.6
-Tested up to: 5.4.2
-Stable tag: 0.5.1
-Requires PHP: 7.2
+Tested up to: 5.6
+Stable tag: unreleased
+Requires PHP: 7.4
 Author URI: https://noplanman.ch
 Plugin URI: https://git.feneas.org/noplanman/wp-otp
 License: GPLv2 or later
@@ -50,7 +50,7 @@ There are a multitude of filters to be adjusted.
 * `wp_otp_secret_length`: Length of the secret key.
 
 = Minimum requirements =
-WordPress 4.6, PHP 7.2.
+WordPress 4.6, PHP 7.4.
 
 = Donate / Support =
 
@@ -93,6 +93,10 @@ Your site admin has either disabled the plugin or enabled stealth mode.
 This means that you will need to add your OTP (or recovery) code at the end of your password.
 
 == Changelog ==
+
+= unreleased =
+* Require at least PHP 7.4.
+* Bump dependencies.
 
 = 0.5.1 =
 * Fix activation and deactivation hooks.
