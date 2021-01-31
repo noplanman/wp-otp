@@ -4,18 +4,17 @@ cache:
   - vendor/
 
 before_script:
-- apk -U add git
+- apk -U add icu-dev git
 - curl -sS https://getcomposer.org/installer | php
+- docker-php-ext-configure intl && docker-php-ext-install intl
 - php composer.phar install
-
-test:7.2:
-  image: php:7.2-cli-alpine
-  script: php composer.phar check-code
-
-test:7.3:
-  image: php:7.3-cli-alpine
-  script: php composer.phar check-code
 
 test:7.4:
   image: php:7.4-cli-alpine
   script: php composer.phar check-code
+  tags: [dind]
+
+test:8.0:
+  image: php:8.0-cli-alpine
+  script: php composer.phar check-code
+  tags: [dind]

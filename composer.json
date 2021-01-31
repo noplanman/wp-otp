@@ -23,14 +23,14 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4|^8.0",
         "spomky-labs/otphp": "^10.0",
-        "chillerlan/php-qrcode": "^3.3"
+        "chillerlan/php-qrcode": "^4.3"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
-        "symfony/var-dumper": "^5.1",
+        "symfony/var-dumper": "^5.2",
         "wp-coding-standards/wpcs": "^2.3"
     },
     "scripts": {
