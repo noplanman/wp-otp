@@ -4,7 +4,7 @@ Donate link: https://noplanman.ch/donate
 Tags: login, 2fa, two factor, otp, totp, one time password, security, recovery, google authenticator
 Requires at least: 4.6
 Tested up to: 5.6
-Stable tag: unreleased
+Stable tag: 0.6.0
 Requires PHP: 7.4
 Author URI: https://noplanman.ch
 Plugin URI: https://git.feneas.org/noplanman/wp-otp
@@ -94,7 +94,7 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 
 == Changelog ==
 
-= unreleased =
+= 0.6.0 =
 * Require at least PHP 7.4 and update all code.
 * Allow for PHP 8.0.
 * Bump dependencies.
@@ -149,6 +149,9 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 * First version!
 
 == Upgrade Notice ==
+
+= 0.6.0 =
+Minimum requirements are now WP 4.6 and PHP 7.4, supporting PHP 8.0!
 
 = 0.4.0 =
 Minimum requirements are now WP 4.6 and PHP 7.1!
