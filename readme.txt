@@ -94,6 +94,9 @@ This means that you will need to add your OTP (or recovery) code at the end of y
 
 == Changelog ==
 
+= unreleased =
+* Fix nonce issue when saving profile.
+
 = 0.6.0 =
 * Require at least PHP 7.4 and update all code.
 * Allow for PHP 8.0.

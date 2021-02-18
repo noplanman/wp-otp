@@ -43,8 +43,8 @@
 				<em><?php esc_html_e( 'To activate WP-OTP, enter the One Time Password from your authenticator app and save your profile.', 'wp-otp' ); ?></em><br><br>
 				<label for="wp-otp-code"><?php esc_html_e( 'One Time Password', 'wp-otp' ); ?></label><br>
 				<input type="text" class="input" name="wp-otp-code" id="wp-otp-code"/>
-				<?php wp_nonce_field( 'wp_otp_nonce', 'wp_otp_nonce', false ); ?>
 			<?php endif; ?>
+			<?php wp_nonce_field( 'wp_otp_nonce', 'wp_otp_nonce', false ); ?>
 		</th>
 		<td>
 			<img id="wp-otp-qr-code" src="<?php echo esc_attr( $otp_qr_code_img_uri ); ?>" alt="<?php esc_attr_e( 'QR Code to scan with mobile app', 'wp-otp' ); ?>"/><br>
